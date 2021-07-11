@@ -70,15 +70,15 @@ $bcom = $_POST['bcom'];
 $other = $_POST['other'];
 $totalMeritCount = $_POST['totalMeritCount'];
 $signature = $_POST['signature'];
+$count = 0;
 
 
-if (!file_exists("uploads/".$registrationNo)) {
-    mkdir("uploads/".$registrationNo, 0777, true);
+if (!file_exists("uploads/" . $registrationNo)) {
+    mkdir("uploads/" . $registrationNo, 0777, true);
 }
 
 
 foreach ($_FILES as $key => $obj) {
-    print_r($key);
     $fname = $obj['name'];
     $temp = $obj['tmp_name'];
     $filetype = $obj['type'];
@@ -86,49 +86,31 @@ foreach ($_FILES as $key => $obj) {
     $fileext = strtolower(end($filediv));
     $creationTime = getCurrentTime();
     $uniquename = $key . $creationTime . '.' . $fileext;
-    $uploaded = "uploads/".$registrationNo."/".$uniquename;
+    $uploaded = "uploads/" . $registrationNo . "/" . $uniquename;
     if ($filetype == "image/png" || $filetype == "image/jpeg" || $filetype == "image/jpg" || $file_type == "application/pdf") {
         if (move_uploaded_file($temp, $uploaded)) {
-            if($key=='form'){
+            if ($key == 'form') {
                 $form = $uploaded;
-            } else if($key=='photo'){
+            } else if ($key == 'photo') {
                 $photo = $uploaded;
-            } else if($key=='categoryCertificate'){
+            } else if ($key == 'categoryCertificate') {
                 $categoryCertificate = $uploaded;
-            } else if($key=='subCategoryCertificate'){
+            } else if ($key == 'subCategoryCertificate') {
                 $subCategoryCertificate = $uploaded;
-            } else if($key=='nationalCertificate'){
+            } else if ($key == 'nationalCertificate') {
                 $nationalCertificate = $uploaded;
-            } else if($key=='nccCertificate'){
+            } else if ($key == 'nccCertificate') {
                 $nccCertificate = $uploaded;
-            } else if($key=='nssDocument'){
+            } else if ($key == 'nssDocument') {
                 $nssDocument = $uploaded;
+            } else {
+                $documents[$count]['document'] = $uploaded;
+                $count = $count + 1;
             }
         }
     }
 }
-
-
-//Uploding documents from JSON
-// foreach ($documents as $value) {
-//     $document = $value['document'];
-//     if (isset($_FILES[$document])) {
-//         $file_name = $_FILES[$document]['name'];
-//         $file_temp = $_FILES[$document]['tmp_name'];
-//         $file_type = $_FILES[$document]['type'];
-//         $div = explode('.', $file_name);
-//         $file_ext = strtolower(end($div));
-//         $unique_file = substr(md5(time()), 2, 8) . '.' . $file_ext;
-//         $uploaded_file = "uploads/" . $unique_file;
-//         $file_type = $_FILES[$document]['type'];
-//         if ($file_type == "image/png" || $file_type == "image/jpeg" || $file_type == "image/jpg" || $file_type == "application/pdf") {
-//             if (move_uploaded_file($file_temp, $uploaded_file)) {
-//                 $value['document'] = $uploaded_file;
-//             }
-//         }
-//     }
-// }
-
+$documents = json_encode($documents);
 
 $sql1 = "INSERT INTO basic_details (registrationNo, 
 faculty,
