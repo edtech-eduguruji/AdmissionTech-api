@@ -71,58 +71,208 @@ $other = $_POST['other'];
 $totalMeritCount = $_POST['totalMeritCount'];
 $signature = $_POST['signature'];
 
-// Photo
-if (isset($_FILES['photo'])) {
-    $imgfile_name = $_FILES['photo']['name'];
-    $imgfile_temp = $_FILES['photo']['tmp_name'];
-    $imgfile_type = $_FILES['photo']['type'];
-    $div = explode('.', $imgfile_name);
-    $file_ext = strtolower(end($div));
-    $unique_image = substr(md5(time()), 2, 8) . '.' . $file_ext;
-    $imguploaded_image = "uploads/" . $unique_image;
-    $imgfile_type = $_FILES['photo']['type'];
-    if ($imgfile_type == "image/png" || $imgfile_type == "image/jpeg" || $imgfile_type == "image/jpg") {
-        if (move_uploaded_file($imgfile_temp, $imguploaded_image)) {
-            $photo = ($imguploaded_image);
-        }
-    }
+
+if (!file_exists("uploads/".$registrationNo)) {
+    mkdir("uploads/".$registrationNo, 0777, true);
 }
 
-//Uploding documents from JSON
-foreach ($documents as $value) {
-    $document = $value['document'];
-    if (isset($_FILES[$document])) {
-        $file_name = $_FILES[$document]['name'];
-        $file_temp = $_FILES[$document]['tmp_name'];
-        $file_type = $_FILES[$document]['type'];
-        $div = explode('.', $file_name);
-        $file_ext = strtolower(end($div));
-        $unique_file = substr(md5(time()), 2, 8) . '.' . $file_ext;
-        $uploaded_file = "uploads/" . $unique_file;
-        $file_type = $_FILES[$document]['type'];
-        if ($file_type == "image/png" || $file_type == "image/jpeg" || $file_type == "image/jpg" || $file_type == "application/pdf") {
-            if (move_uploaded_file($file_temp, $uploaded_file)) {
-                $value['document'] = $uploaded_file;
+
+foreach ($_FILES as $key => $obj) {
+    print_r($key);
+    $fname = $obj['name'];
+    $temp = $obj['tmp_name'];
+    $filetype = $obj['type'];
+    $filediv = explode('.', $fname);
+    $fileext = strtolower(end($filediv));
+    $creationTime = getCurrentTime();
+    $uniquename = $key . $creationTime . '.' . $fileext;
+    $uploaded = "uploads/".$registrationNo."/".$uniquename;
+    if ($filetype == "image/png" || $filetype == "image/jpeg" || $filetype == "image/jpg" || $file_type == "application/pdf") {
+        if (move_uploaded_file($temp, $uploaded)) {
+            if($key=='form'){
+                $form = $uploaded;
+            } else if($key=='photo'){
+                $photo = $uploaded;
+            } else if($key=='categoryCertificate'){
+                $categoryCertificate = $uploaded;
+            } else if($key=='subCategoryCertificate'){
+                $subCategoryCertificate = $uploaded;
+            } else if($key=='nationalCertificate'){
+                $nationalCertificate = $uploaded;
+            } else if($key=='nccCertificate'){
+                $nccCertificate = $uploaded;
+            } else if($key=='nssDocument'){
+                $nssDocument = $uploaded;
             }
         }
     }
 }
 
-$sql1 = "INSERT INTO basic_details (id,registrationNo) 
-    VALUES ('$basic_details_id','$registrationNo')";
-$con->query($sql1);
-$sql2 = "INSERT INTO advanced_details (id,registrationNo) 
-    VALUES ('$advanced_details_id','$registrationNo')";
+
+//Uploding documents from JSON
+// foreach ($documents as $value) {
+//     $document = $value['document'];
+//     if (isset($_FILES[$document])) {
+//         $file_name = $_FILES[$document]['name'];
+//         $file_temp = $_FILES[$document]['tmp_name'];
+//         $file_type = $_FILES[$document]['type'];
+//         $div = explode('.', $file_name);
+//         $file_ext = strtolower(end($div));
+//         $unique_file = substr(md5(time()), 2, 8) . '.' . $file_ext;
+//         $uploaded_file = "uploads/" . $unique_file;
+//         $file_type = $_FILES[$document]['type'];
+//         if ($file_type == "image/png" || $file_type == "image/jpeg" || $file_type == "image/jpg" || $file_type == "application/pdf") {
+//             if (move_uploaded_file($file_temp, $uploaded_file)) {
+//                 $value['document'] = $uploaded_file;
+//             }
+//         }
+//     }
+// }
+
+
+$sql1 = "INSERT INTO basic_details (registrationNo, 
+faculty,
+  courseType,
+  course,
+  vaccinated,
+  nameTitle,
+  name,
+  dob,
+  gender,
+  religion,
+  caste,
+  category,
+  subCategory,
+  categoryCertificate,
+  subCategoryCertificate,
+  personalMobile,
+  parentMobile,
+  aadharNo,
+  email,
+  mediumOfInstitution,
+  photo,
+  wrn,
+  form,
+  signature,
+  submitted,
+  payment) 
+    VALUES ('$registrationNo',
+    '$faculty',
+  '$courseType',
+  '$course',
+  '$vaccinated',
+  '$nameTitle',
+  '$name',
+  '$dob',
+  '$gender',
+  '$religion',
+  '$caste',
+  '$category',
+  '$subCategory',
+  '$categoryCertificate',
+  '$subCategoryCertificate',
+  '$personalMobile',
+  '$parentMobile',
+  '$aadharNo',
+  '$email',
+  '$mediumOfInstitution',
+  '$photo',
+  '$wrn',
+  '$form',
+  '$signature',
+  '0',
+  '0')";
+//   echo $sql1;
+mysqli_query($con, $sql1);
+
+
+$sql2 = "INSERT INTO advanced_details (registrationNo,
+  fatherName ,
+  motherName ,
+  parentsOccupation ,
+  guardianName ,
+  relationOfApplicant ,
+  houseNo ,
+  street ,
+  pincode ,
+  postOffice ,
+  state ,
+  city ,
+  cHouseNo ,
+  cStreet ,
+  cPincode ,
+  cPostOffice ,
+  cState ,
+  cCity ) 
+    VALUES ('$registrationNo',
+  '$fatherName' ,
+  '$motherName' ,
+  '$parentsOccupation' ,
+  '$guardianName' ,
+  '$relationOfApplicant' ,
+  '$houseNo' ,
+  '$street' ,
+  '$pincode' ,
+  '$postOffice' ,
+  '$state' ,
+  '$city' ,
+  '$cHouseNo' ,
+  '$cStreet' ,
+  '$cPincode' ,
+  '$cPostOffice' ,
+  '$cState' ,
+  '$cCity' )";
 $con->query($sql2);
-$sql3 = "INSERT INTO academic_details (id,registrationNo,academicDetails) 
-    VALUES ('$academic_details_id','$registrationNo','$academicDetails')";
+
+$sql3 = "INSERT INTO academic_details (registrationNo,academicDetails) 
+    VALUES ('$registrationNo','$academicDetails')";
 $con->query($sql3);
-$sql4 = "INSERT INTO documents (id,registrationNo,documents) 
-    VALUES ('$documents_id','$registrationNo','$documents')";
+
+$sql4 = "INSERT INTO documents (registrationNo,documents) 
+    VALUES ('$registrationNo','$documents')";
 $con->query($sql4);
-$sql5 = "INSERT INTO merit_details (id,registrationNo,password,role) 
-    VALUES ('$merit_details_id','$registrationNo')";
+
+
+$sql5 = "INSERT INTO merit_details (registrationNo,
+nationalCompetition ,
+  nationalCertificate ,
+  otherCompetition ,
+  otherCertificate ,
+  ncc ,
+  nccCertificate ,
+  freedomFighter ,
+  nationalSevaScheme ,
+  nssDocument ,
+  roverRanger ,
+  otherRoverRanger ,
+  rrDocument ,
+  bcom ,
+  other ,
+  totalMeritCount) 
+    VALUES ('$registrationNo', 
+  '$nationalCompetition' ,
+  '$nationalCertificate' ,
+  '$otherCompetition' ,
+  '$otherCertificate' ,
+  '$ncc' ,
+  '$nccCertificate' ,
+  '$freedomFighter' ,
+  '$nationalSevaScheme' ,
+  '$nssDocument' ,
+  '$roverRanger' ,
+  '$otherRoverRanger' ,
+  '$rrDocument' ,
+  '$bcom' ,
+  '$other' ,
+  '$totalMeritCount')";
 $con->query($sql5);
+
+
+$sql6 = "INSERT INTO users_info (user_id,user_name ,password ,role ,active) 
+    VALUES ('$registrationNo','$name' ,'$dob' ,'STUDENT' ,'1')";
+$con->query($sql6);
+
+
 $data = array('response' => "yes");
 
 
