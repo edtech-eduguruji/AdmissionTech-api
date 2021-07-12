@@ -166,10 +166,6 @@ CREATE TABLE `users_info` (
   `active` varchar(10) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `users_info`
---
-
 -- Indexes for table `academic_details`
 --
 ALTER TABLE `academic_details`
@@ -212,10 +208,6 @@ ALTER TABLE `users_info`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
---
-
---
 -- AUTO_INCREMENT for table `academic_details`
 --
 ALTER TABLE `academic_details`
@@ -251,6 +243,11 @@ ALTER TABLE `merit_details`
 ALTER TABLE `payment`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- AUTO_INCREMENT for table `users_info`
+--
+ALTER TABLE `users_info`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -19,7 +19,7 @@ where basic_details.registrationNo='$registrationNo'";
 // -- INNER JOIN payment ON basic_details.registrationNo = payment.registrationNo 
 
 $result = mysqli_query($con, $sql_query);
-$response = array();
+$response = null;
 
 if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
