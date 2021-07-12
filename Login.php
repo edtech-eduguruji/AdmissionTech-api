@@ -9,7 +9,6 @@ $con = $dbConnection->getConnection();
 $username = $_GET['username'];
 $password = $_GET['password'];
 
-
 $sql = "SELECT * FROM users_info WHERE user_name='$username' AND password='$password' AND active = 1 ";
 $result = $con->query($sql);
 $count = mysqli_num_rows($result);
