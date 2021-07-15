@@ -34,8 +34,14 @@ $fatherName = $_POST['fatherName'];
 $motherName = $_POST['motherName'];
 $parentsOccupation = $_POST['parentsOccupation'];
 $wrn = $_POST['wrn'];
-$form = $_POST['form'];
-$photo = $_POST['photo'];
+$form = '';
+if (isset($_POST['form'])) {
+    $form = $_POST['form'];
+}
+$photo = '';
+if (isset($_POST['photo'])) {
+    $photo = $_POST['photo'];
+}
 $houseNo = $_POST['houseNo'];
 $street = $_POST['street'];
 $pincode = $_POST['pincode'];
@@ -52,28 +58,52 @@ $aadharNo = $_POST['aadharNo'];
 $email = $_POST['email'];
 $category = $_POST['category'];
 $subCategory = $_POST['subCategory'];
-$categoryCertificate = $_POST['categoryCertificate'];
-$subCategoryCertificate = $_POST['subCategoryCertificate'];
+$categoryCertificate = '';
+if (isset($_POST['categoryCertificate'])) {
+    $categoryCertificate = $_POST['categoryCertificate'];
+}
+$subCategoryCertificate = '';
+if (isset($_POST['subCategoryCertificate'])) {
+    $subCategoryCertificate = $_POST['subCategoryCertificate'];
+}
 $academicDetails = $_POST['academicDetails'];
 $documents = json_decode($_POST['documents'], true);
 $guardianName = $_POST['guardianName'];
 $relationOfApplicant = $_POST['relationOfApplicant'];
 $nationalCompetition = $_POST['nationalCompetition'];
-$nationalCertificate = $_POST['nationalCertificate'];
+$nationalCertificate = '';
+if (isset($_POST['nationalCertificate'])) {
+    $nationalCertificate = $_POST['nationalCertificate'];
+}
 $otherCompetition = $_POST['otherCompetition'];
-$otherCertificate = $_POST['otherCertificate'];
+$otherCertificate = '';
+if (isset($_POST['otherCertificate'])) {
+    $otherCertificate = $_POST['otherCertificate'];
+}
 $ncc = $_POST['ncc'];
-$nccCertificate = $_POST['nccCertificate'];
+$nccCertificate = '';
+if (isset($_POST['nccCertificate'])) {
+    $nccCertificate = $_POST['nccCertificate'];
+}
 $freedomFighter = $_POST['freedomFighter'];
 $nationalSevaScheme = $_POST['nationalSevaScheme'];
-$nssDocument = $_POST['nssDocument'];
+$nssDocument = '';
+if (isset($_POST['nssDocument'])) {
+    $nssDocument = $_POST['nssDocument'];
+}
 $roverRanger = $_POST['roverRanger'];
 $otherRoverRanger = $_POST['otherRoverRanger'];
-$rrDocument = $_POST['rrDocument'];
+$rrDocument = '';
+if (isset($_POST['rrDocument'])) {
+    $rrDocument = $_POST['rrDocument'];
+}
 $bcom = $_POST['bcom'];
 $other = $_POST['other'];
 $totalMeritCount = $_POST['totalMeritCount'];
-$signature = $_POST['signature'];
+$signature = '';
+if (isset($_POST['signature'])) {
+    $signature = $_POST['signature'];
+}
 
 if (!file_exists("../uploads/" . $registrationNo)) {
     mkdir("../uploads/" . $registrationNo, 0777, true);
@@ -104,7 +134,7 @@ foreach ($_FILES as $key => $obj) {
                 $nccCertificate = $dbPath;
             } else if ($key == 'nssDocument') {
                 $nssDocument = $dbPath;
-            } else if($key=='signature'){
+            } else if ($key == 'signature') {
                 $signature = $dbPath;
             } else {
                 $documents[$count]['document'] = $dbPath;
@@ -115,9 +145,8 @@ foreach ($_FILES as $key => $obj) {
 }
 
 
-if($registrationNo==NULL) {
+if ($registrationNo == NULL || $registrationNo == '') {
     $registrationNo = uniqid();
-
     $documents = json_encode($documents);
 
     $sql1 = "INSERT INTO basic_details (registrationNo, 
@@ -164,7 +193,6 @@ if($registrationNo==NULL) {
     $sql6 = "INSERT INTO users_info (user_id,user_name ,password ,role ,active) 
         VALUES ('$registrationNo','$registrationNo' ,'$dob' ,'STUDENT' ,'1')";
     $con->query($sql6);
-
 } else {
     $documents = json_encode($documents);
     //update code
@@ -173,8 +201,8 @@ if($registrationNo==NULL) {
     nameTitle='$nameTitle', name='$name', dob='$dob', gender='$gender', religion='$religion', 
     caste='$caste', category='$category', subCategory='$subCategory', categoryCertificate='$categoryCertificate', 
     subCategoryCertificate='$subCategoryCertificate', personalMobile='$personalMobile', parentMobile='$parentMobile', 
-    aadharNo='$aadharNo', email='$emai', mediumOfInstitution='$mediumOfInstitution', photo='$photo', wrn='$wrn', 
-    form='$form', signature='$signature', submitted='$submit', payment='$payment' 
+    aadharNo='$aadharNo', email='$email', mediumOfInstitution='$mediumOfInstitution', photo='$photo', wrn='$wrn', 
+    form='$form', signature='$signature', submitted='$submit', payment='0' 
     WHERE registrationNo='$registrationNo'";
     $con->query($sql1);
 
@@ -204,8 +232,10 @@ if($registrationNo==NULL) {
     $con->query($sql6);
 }
 
-$data = array('registrationNo' => $registrationNo, 'active' => "1", 
-'role' =>"STUDENT", 'user_id' => $registrationNo, 'user_name' => $registrationNo);
+$data = array(
+    'registrationNo' => $registrationNo, 'active' => "1",
+    'role' => "STUDENT", 'user_id' => $registrationNo, 'user_name' => $registrationNo
+);
 
 $dbConnection->closeConnection();
 echo json_encode($data);
