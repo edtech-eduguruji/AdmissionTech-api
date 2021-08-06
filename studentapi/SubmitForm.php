@@ -7,6 +7,7 @@ include_once('../utils.php');
 $dbConnection = new DBConnection($db);
 $con = $dbConnection->getConnection();
 
+$creationTime = getCurrentTime();
 $data = array();
 $basic_details_id = uniqid();
 $advanced_details_id = uniqid();
@@ -19,7 +20,12 @@ $count = 0;
 
 $faculty = $_POST['faculty'];
 $courseType = $_POST['courseType'];
-$course = $_POST['course'];
+$major1 = json_decode($_POST['major1'], true);
+$major2 = json_decode($_POST['major2'], true);
+$major3 = $_POST['major3'];
+$major4 = $_POST['major4'];
+$vocationalSubject = $_POST['vocationalSubject'];
+$coCurriculum = $_POST['coCurriculum'];
 $mediumOfInstitution = $_POST['mediumOfInstitution'];
 $vaccinated = $_POST['vaccinated'];
 $nameTitle = $_POST['nameTitle'];
@@ -66,7 +72,7 @@ $subCategoryCertificate = '';
 if (isset($_POST['subCategoryCertificate'])) {
     $subCategoryCertificate = $_POST['subCategoryCertificate'];
 }
-$academicDetails = $_POST['academicDetails'];
+$academicDetails = json_decode($_POST['academicDetails'], true);
 $documents = json_decode($_POST['documents'], true);
 $guardianName = $_POST['guardianName'];
 $relationOfApplicant = $_POST['relationOfApplicant'];
@@ -149,45 +155,50 @@ if ($registrationNo == NULL || $registrationNo == '') {
     $registrationNo = uniqid();
     $documents = json_encode($documents);
 
+    $sql = "INSERT INTO faculty_course_details (registrationNo,faculty,courseType,
+    major1,major2, major3, major4, vocationalSubject, coCurriculum, lastUpdated, creationTime) 
+        VALUES ('$registrationNo','$faculty','$courseType','$major1','$major2','$major3','$major4',
+        '$vocationalSubject','$coCurriculum','$creationTime','$creationTime')";
+    mysqli_query($con, $sql);
+
     $sql1 = "INSERT INTO basic_details (registrationNo, 
     faculty, courseType, course, vaccinated, nameTitle, name, dob, gender, religion, 
     caste, category, subCategory, categoryCertificate, subCategoryCertificate, personalMobile, 
-    parentMobile, aadharNo, email, mediumOfInstitution, photo, wrn, form, signature, submitted, payment) 
-        VALUES ('$registrationNo',
-        '$faculty',
+    parentMobile, aadharNo, email, mediumOfInstitution, photo, wrn, form, signature, submitted, payment, lastUpdated, creationTime) 
+        VALUES ('$registrationNo','$faculty',
     '$courseType', '$course', '$vaccinated', '$nameTitle', '$name', '$dob', '$gender', 
     '$religion', '$caste', '$category', '$subCategory', '$categoryCertificate', 
     '$subCategoryCertificate', '$personalMobile', '$parentMobile', '$aadharNo', '$email', 
-    '$mediumOfInstitution', '$photo', '$wrn', '$form', '$signature', '$submit', '0')";
+    '$mediumOfInstitution', '$photo', '$wrn', '$form', '$signature', '$submit', '0', '$creationTime','$creationTime')";
     //   echo $sql1;
     mysqli_query($con, $sql1);
 
 
     $sql2 = "INSERT INTO advanced_details (registrationNo,
     fatherName , motherName , parentsOccupation , guardianName , relationOfApplicant , 
-    houseNo , street , pincode , postOffice , state , city , cHouseNo , cStreet , cPincode , cPostOffice , cState , cCity ) 
+    houseNo , street , pincode , postOffice , state , city , cHouseNo , cStreet , cPincode , cPostOffice , cState , cCity, lastUpdated, creationTime ) 
         VALUES ('$registrationNo',
     '$fatherName' , '$motherName' , '$parentsOccupation' , '$guardianName' , 
     '$relationOfApplicant' , '$houseNo' , '$street' , '$pincode' , '$postOffice' , 
-    '$state' , '$city' , '$cHouseNo' , '$cStreet' , '$cPincode' , '$cPostOffice' , '$cState' , '$cCity' )";
+    '$state' , '$city' , '$cHouseNo' , '$cStreet' , '$cPincode' , '$cPostOffice' , '$cState' , '$cCity', '$creationTime', '$creationTime' )";
     $con->query($sql2);
 
-    $sql3 = "INSERT INTO academic_details (registrationNo,academicDetails) 
+    $sql3 = "INSERT INTO academic_details (registrationNo,academicDetails,lastUpdated,creationTime) 
         VALUES ('$registrationNo','$academicDetails')";
     $con->query($sql3);
 
-    $sql4 = "INSERT INTO documents (registrationNo,documents) 
-        VALUES ('$registrationNo','$documents')";
+    $sql4 = "INSERT INTO documents (registrationNo,documents,lastUpdated,creationTime) 
+        VALUES ('$registrationNo','$documents','$creationTime','$creationTime')";
     $con->query($sql4);
 
     $sql5 = "INSERT INTO merit_details (registrationNo,
     nationalCompetition , nationalCertificate , otherCompetition , otherCertificate , 
     ncc , nccCertificate , freedomFighter , nationalSevaScheme , nssDocument , roverRanger , 
-    otherRoverRanger , rrDocument , bcom , other , totalMeritCount) 
+    otherRoverRanger , rrDocument , bcom , other , totalMeritCount, lastUpdated, creationTIme) 
         VALUES ('$registrationNo', 
     '$nationalCompetition' , '$nationalCertificate' , '$otherCompetition' , '$otherCertificate' , 
     '$ncc' , '$nccCertificate' , '$freedomFighter' , '$nationalSevaScheme' , '$nssDocument' , 
-    '$roverRanger' , '$otherRoverRanger' , '$rrDocument' , '$bcom' , '$other' , '$totalMeritCount')";
+    '$roverRanger' , '$otherRoverRanger' , '$rrDocument' , '$bcom' , '$other' , '$totalMeritCount', '$creationTime', '$creationTime')";
     $con->query($sql5);
 
     $sql6 = "INSERT INTO users_info (user_id,user_name ,password ,role ,active) 
@@ -196,13 +207,20 @@ if ($registrationNo == NULL || $registrationNo == '') {
 } else {
     $documents = json_encode($documents);
     //update code
+    $sql = "UPDATE faculty_course_details SET 
+    faculty='$faculty', courseType='$courseType', major1='$major1', major2='$major2' ,
+    major3='$major3',major4='$major4',vocationalSubject='$vocationalSubject',
+    coCurriculum='$coCurriculum',lastUpdated='$creationTime'
+    WHERE registrationNo='$registrationNo'";
+    $con->query($sql);
+
     $sql1 = "UPDATE basic_details SET 
-    faculty='$faculty', courseType='$courseType', course='$course', vaccinated='$vaccinated', 
+    faculty='$faculty', courseType='$courseType', vaccinated='$vaccinated', 
     nameTitle='$nameTitle', name='$name', dob='$dob', gender='$gender', religion='$religion', 
     caste='$caste', category='$category', subCategory='$subCategory', categoryCertificate='$categoryCertificate', 
     subCategoryCertificate='$subCategoryCertificate', personalMobile='$personalMobile', parentMobile='$parentMobile', 
     aadharNo='$aadharNo', email='$email', mediumOfInstitution='$mediumOfInstitution', photo='$photo', wrn='$wrn', 
-    form='$form', signature='$signature', submitted='$submit', payment='0' 
+    form='$form', signature='$signature', submitted='$submit', payment='0', lastUpdated='$creationTime'
     WHERE registrationNo='$registrationNo'";
     $con->query($sql1);
 
@@ -210,14 +228,14 @@ if ($registrationNo == NULL || $registrationNo == '') {
     fatherName='$fatherName', motherName='$motherName', parentsOccupation='$parentsOccupation', 
     guardianName='$guardianName', relationOfApplicant='$relationOfApplicant', houseNo='$houseNo', street='$street', 
     pincode='$pincode', postOffice='$postOffice', state='$state', city='$city', cHouseNo='$cHouseNo', cStreet='$cStreet', 
-    cPincode='$cPincode', cPostOffice='$cPostOffice', cState='$cState', cCity='$cCity'
+    cPincode='$cPincode', cPostOffice='$cPostOffice', cState='$cState', cCity='$cCity', lastUpdated='$creationTime'
     WHERE registrationNo='$registrationNo'";
     $con->query($sql2);
 
-    $sql3 = "UPDATE academic_details SET academicDetails='$academicDetails' WHERE registrationNo='$registrationNo'";
+    $sql3 = "UPDATE academic_details SET academicDetails='$academicDetails',lastUpdated='$creationTime' WHERE registrationNo='$registrationNo'";
     $con->query($sql3);
 
-    $sql4 = "UPDATE documents SET documents='$documents' WHERE registrationNo='$registrationNo'";
+    $sql4 = "UPDATE documents SET documents='$documents',lastUpdated='$creationTime' WHERE registrationNo='$registrationNo'";
     $con->query($sql4);
 
     $sql5 = "UPDATE merit_details SET
@@ -225,10 +243,10 @@ if ($registrationNo == NULL || $registrationNo == '') {
     otherCompetition='$otherCompetition ', otherCertificate='$otherCertificate', ncc='$ncc', 
     nccCertificate='$nccCertificate', freedomFighter='$freedomFighter', nationalSevaSchemenationalSevaScheme', 
     nssDocument='$nssDocument', roverRanger='$roverRanger', otherRoverRanger='$otherRoverRanger', rrDocument='$rrDocument', 
-    bcom='$bcom', other='$other', totalMeritCount='$totalMeritCount' WHERE registrationNo='$registrationNo'";
+    bcom='$bcom', other='$other', totalMeritCount='$totalMeritCount', lastUpdated='$creationTime' WHERE registrationNo='$registrationNo'";
     $con->query($sql5);
 
-    $sql6 = "UPDATE users_info SET password='$dob' WHERE registrationNo='$registrationNo'";
+    $sql6 = "UPDATE users_info SET password='$dob' WHERE user_id='$registrationNo'";
     $con->query($sql6);
 }
 
