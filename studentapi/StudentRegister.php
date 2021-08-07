@@ -8,11 +8,11 @@ $dbConnection = new DBConnection($db);
 $con = $dbConnection->getConnection();
 
 $data = array();
-$random = substr(str_shuffle(MD5(microtime())), 0, 6);
-$registrationNo = 'AGA2021-'.$dob.'-'.$random;
+$dob = $_POST['dob'];
 $name = $_POST['name'];
 $mobile = $_POST['mobile'];
-$dob = $_POST['dob'];
+$random = substr(str_shuffle(MD5(microtime())), 0, 6);
+$registrationNo = 'AGA2021-'.$dob.'-'.$random;
 
 //Time entry
 date_default_timezone_set('Asia/Kolkata');
