@@ -215,8 +215,7 @@ if ($registrationNo == NULL || $registrationNo == '') {
     WHERE registrationNo='$registrationNo'";
     $con->query($sql);
 
-    $sql1 = "UPDATE basic_details SET 
-    faculty='$faculty', courseType='$courseType', vaccinated='$vaccinated', 
+    $sql1 = "UPDATE basic_details SET vaccinated='$vaccinated', 
     nameTitle='$nameTitle', name='$name', dob='$dob', gender='$gender', religion='$religion', 
     caste='$caste', category='$category', subCategory='$subCategory', categoryCertificate='$categoryCertificate', 
     subCategoryCertificate='$subCategoryCertificate', personalMobile='$personalMobile', parentMobile='$parentMobile', 
