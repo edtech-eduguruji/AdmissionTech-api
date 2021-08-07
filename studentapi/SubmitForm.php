@@ -150,10 +150,14 @@ foreach ($_FILES as $key => $obj) {
     }
 }
 
+$documents = json_encode($documents);
+$academicDetails = json_encode($academicDetails);
+$major1 = json_encode($major1);
+$major2 = json_encode($major2);
+
 
 if ($registrationNo == NULL || $registrationNo == '') {
     $registrationNo = uniqid();
-    $documents = json_encode($documents);
 
     $sql = "INSERT INTO faculty_course_details (registrationNo,faculty,courseType,
     major1,major2, major3, major4, vocationalSubject, coCurriculum, lastUpdated, creationTime) 
@@ -203,9 +207,6 @@ if ($registrationNo == NULL || $registrationNo == '') {
         VALUES ('$registrationNo','$registrationNo' ,'$dob' ,'STUDENT' ,'1')";
     $con->query($sql6);
 } else {
-    $documents = json_encode($documents);
-    $academicDetails = json_encode($academicDetails);
-    $major1 = json_encode($major1);
 
     //update code
     $sql = "UPDATE faculty_course_details SET 
@@ -241,14 +242,13 @@ if ($registrationNo == NULL || $registrationNo == '') {
     $sql5 = "UPDATE merit_details SET
     nationalCompetition='$nationalCompetition', nationalCertificate='$nationalCertificate', 
     otherCompetition='$otherCompetition ', otherCertificate='$otherCertificate', ncc='$ncc', 
-    nccCertificate='$nccCertificate', freedomFighter='$freedomFighter', nationalSevaSchemenationalSevaScheme', 
+    nccCertificate='$nccCertificate', freedomFighter='$freedomFighter', nationalSevaScheme='$nationalSevaScheme', 
     nssDocument='$nssDocument', roverRanger='$roverRanger', otherRoverRanger='$otherRoverRanger', rrDocument='$rrDocument', 
     bcom='$bcom', other='$other', totalMeritCount='$totalMeritCount', lastUpdated='$creationTime' WHERE registrationNo='$registrationNo'";
     $con->query($sql5);
 
     $sql6 = "UPDATE users_info SET password='$dob' WHERE user_id='$registrationNo'";
     $con->query($sql6);
-
 }
 
 $data = array(

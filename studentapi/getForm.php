@@ -26,6 +26,8 @@ if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
         $response = $row;
     }
+} else {
+    header(' 500 Internal Server Error', true, 500);
 }
 
 $dbConnection->closeConnection();

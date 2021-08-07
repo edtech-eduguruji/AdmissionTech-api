@@ -1,10 +1,5 @@
 <?php
 
-function getDBProperty()
-{
-    return parse_ini_file(dirname(__DIR__) . "/AdmissionTech-api/DbProperties.ini");
-}
-
 date_default_timezone_set('Asia/Kolkata');
 function getCurrentTime()
 {
