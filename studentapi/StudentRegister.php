@@ -24,8 +24,9 @@ $sql2 = "INSERT INTO users_info (user_id,user_name,password,role)
     VALUES ('$registrationNo','$registrationNo','$dob','STUDENT')";
 $con->query($sql2);
 
-$data = array('user_id' => $registrationNo, 'user_name' => $mobile, 'password' => $dob, 'fullname' => $name, 'submitted' => "0", 'payment' => "0", 'role' => "STUDENT");
-
-
-$dbConnection->closeConnection();
-echo json_encode($data);
+if($con->query($sql) && $con->query($sql2)) {
+    $data = array('user_id' => $registrationNo, 'user_name' => $mobile, 
+    'password' => $dob, 'fullname' => $name, 'submitted' => "0", 'payment' => "0", 'role' => "STUDENT");    
+    $dbConnection->closeConnection();
+    echo json_encode($data);
+}
