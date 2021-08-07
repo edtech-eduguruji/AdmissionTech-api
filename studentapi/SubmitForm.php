@@ -204,6 +204,9 @@ if ($registrationNo == NULL || $registrationNo == '') {
     $con->query($sql6);
 } else {
     $documents = json_encode($documents);
+    $academicDetails = json_encode($academicDetails);
+    $major1 = json_encode($major1);
+
     //update code
     $sql = "UPDATE faculty_course_details SET 
     faculty='$faculty', courseType='$courseType', major1='$major1', major2='$major2' ,
