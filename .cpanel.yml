@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home1/bcsclkxe/public_html/eduguruji.com/admission/api/
+    - /bin/cp -R * $DEPLOYPATH
