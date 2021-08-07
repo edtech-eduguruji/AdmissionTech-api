@@ -161,12 +161,10 @@ if ($registrationNo == NULL || $registrationNo == '') {
         '$vocationalSubject','$coCurriculum','$creationTime','$creationTime')";
     mysqli_query($con, $sql);
 
-    $sql1 = "INSERT INTO basic_details (registrationNo, 
-    faculty, courseType, course, vaccinated, nameTitle, name, dob, gender, religion, 
+    $sql1 = "INSERT INTO basic_details (registrationNo, vaccinated, nameTitle, name, dob, gender, religion, 
     caste, category, subCategory, categoryCertificate, subCategoryCertificate, personalMobile, 
     parentMobile, aadharNo, email, mediumOfInstitution, photo, wrn, form, signature, submitted, payment, lastUpdated, creationTime) 
-        VALUES ('$registrationNo','$faculty',
-    '$courseType', '$course', '$vaccinated', '$nameTitle', '$name', '$dob', '$gender', 
+        VALUES ('$registrationNo', '$vaccinated', '$nameTitle', '$name', '$dob', '$gender', 
     '$religion', '$caste', '$category', '$subCategory', '$categoryCertificate', 
     '$subCategoryCertificate', '$personalMobile', '$parentMobile', '$aadharNo', '$email', 
     '$mediumOfInstitution', '$photo', '$wrn', '$form', '$signature', '$submit', '0', '$creationTime','$creationTime')";
@@ -248,6 +246,7 @@ if ($registrationNo == NULL || $registrationNo == '') {
 
     $sql6 = "UPDATE users_info SET password='$dob' WHERE user_id='$registrationNo'";
     $con->query($sql6);
+
 }
 
 $data = array(

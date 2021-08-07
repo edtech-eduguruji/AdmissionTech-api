@@ -20,17 +20,17 @@ $creationTime = getCurrentTime();
 $sql = "INSERT INTO basic_details (registrationNo,name,personalMobile,dob,submitted,payment,lastUpdated,creationTime) 
     VALUES ('$registrationNo','$name','$mobile','$dob','0','0','$creationTime','$creationTime')";
 
-    $sql1 = "INSERT INTO users_info (user_id,user_name,password,role)  VALUES ('$registrationNo','$registrationNo','$dob','STUDENT')";
+$sql1 = "INSERT INTO users_info (user_id,user_name,password,role)  VALUES ('$registrationNo','$registrationNo','$dob','STUDENT')";
 
-    $sql2 = "INSERT INTO faculty_course_details (registrationNo, creationTime) VALUES ('$registrationNo', '$creationTime')";
+$sql2 = "INSERT INTO faculty_course_details (registrationNo, creationTime) VALUES ('$registrationNo', '$creationTime')";
 
-    $sql3 = "INSERT INTO advanced_details (registrationNo, creationTime) VALUES ('$registrationNo', '$creationTime')";
+$sql3 = "INSERT INTO advanced_details (registrationNo, creationTime) VALUES ('$registrationNo', '$creationTime')";
 
-    $sql4 = "INSERT INTO academic_details (registrationNo, creationTime) VALUES ('$registrationNo', '$creationTime')";
+$sql4 = "INSERT INTO academic_details (registrationNo, creationTime) VALUES ('$registrationNo', '$creationTime')";
 
-    $sql5 = "INSERT INTO documents (registrationNo, creationTime) VALUES ('$registrationNo', '$creationTime')";
+$sql5 = "INSERT INTO documents (registrationNo, creationTime) VALUES ('$registrationNo', '$creationTime')";
 
-    $sql6 = "INSERT INTO merit_details (registrationNo, creationTime) VALUES ('$registrationNo', '$creationTime')";
+$sql6 = "INSERT INTO merit_details (registrationNo, creationTime) VALUES ('$registrationNo', '$creationTime')";
 
 
 if($con->query($sql) && $con->query($sql1) && $con->query($sql2) && $con->query($sql3)
