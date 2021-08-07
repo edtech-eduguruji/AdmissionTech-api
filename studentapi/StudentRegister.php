@@ -19,10 +19,8 @@ $creationTime = getCurrentTime();
 
 $sql = "INSERT INTO basic_details (registrationNo,name,personalMobile,dob,submitted,payment,lastUpdated,creationTime) 
     VALUES ('$registrationNo','$name','$mobile','$dob','0','0','$creationTime','$creationTime')";
-$con->query($sql);
 $sql2 = "INSERT INTO users_info (user_id,user_name,password,role) 
     VALUES ('$registrationNo','$registrationNo','$dob','STUDENT')";
-$con->query($sql2);
 
 if($con->query($sql) && $con->query($sql2)) {
     $data = array('user_id' => $registrationNo, 'user_name' => $mobile, 
