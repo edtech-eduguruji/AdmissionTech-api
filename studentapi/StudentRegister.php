@@ -8,7 +8,8 @@ $dbConnection = new DBConnection($db);
 $con = $dbConnection->getConnection();
 
 $data = array();
-$registrationNo = uniqid();
+$random = substr(str_shuffle(MD5(microtime())), 0, 6);
+$registrationNo = 'AGA2021-'.$dob.'-'.$random;
 $name = $_POST['name'];
 $mobile = $_POST['mobile'];
 $dob = $_POST['dob'];
