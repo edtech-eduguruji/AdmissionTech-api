@@ -1,5 +1,5 @@
 <?php
-$db = parse_ini_file(dirname(__DIR__) . "/AdmissionTech-api/DbProperties.ini");
+$db = parse_ini_file(dirname(__DIR__) . "/api/DbProperties.ini");
 class DBConnection
 {
   public $dbname;
