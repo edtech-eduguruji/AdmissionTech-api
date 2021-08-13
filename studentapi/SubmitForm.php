@@ -24,8 +24,10 @@ $major1 = json_decode($_POST['major1'], true);
 $major2 = json_decode($_POST['major2'], true);
 $major3 = $_POST['major3'];
 $major4 = $_POST['major4'];
-$vocationalSubject = $_POST['vocationalSubject'];
-$coCurriculum = $_POST['coCurriculum'];
+$vocationalSem1 = $_POST['vocationalSem1'];
+$vocationalSem2 = $_POST['vocationalSem2'];
+$coCurriculumSem1 = $_POST['coCurriculumSem1'];
+$coCurriculumSem2 = $_POST['coCurriculumSem2'];
 $mediumOfInstitution = $_POST['mediumOfInstitution'];
 $vaccinated = $_POST['vaccinated'];
 $nameTitle = $_POST['nameTitle'];
@@ -160,9 +162,9 @@ if ($registrationNo == NULL || $registrationNo == '') {
     $registrationNo = uniqid();
 
     $sql = "INSERT INTO faculty_course_details (registrationNo,faculty,courseType,
-    major1,major2, major3, major4, vocationalSubject, coCurriculum, lastUpdated, creationTime) 
+    major1,major2, major3, major4, vocationalSem1, vocationalSem2, coCurriculumSem1, coCurriculumSem2,  lastUpdated, creationTime) 
         VALUES ('$registrationNo','$faculty','$courseType','$major1','$major2','$major3','$major4',
-        '$vocationalSubject','$coCurriculum','$creationTime','$creationTime')";
+        '$vocationalSem1',$vocationalSem2,'$coCurriculumSem1','$coCurriculumSem2','$creationTime','$creationTime')";
     mysqli_query($con, $sql);
 
     $sql1 = "INSERT INTO basic_details (registrationNo, vaccinated, nameTitle, name, dob, gender, religion, 
@@ -211,8 +213,8 @@ if ($registrationNo == NULL || $registrationNo == '') {
     //update code
     $sql = "UPDATE faculty_course_details SET 
     faculty='$faculty', courseType='$courseType', major1='$major1', major2='$major2' ,
-    major3='$major3',major4='$major4',vocationalSubject='$vocationalSubject',
-    coCurriculum='$coCurriculum',lastUpdated='$creationTime'
+    major3='$major3',major4='$major4',vocationalSem1='$vocationalSem1',vocationalSem2='$vocationalSem2',
+    coCurriculumSem1='$coCurriculumSem1',coCurriculumSem2='$coCurriculumSem2',lastUpdated='$creationTime'
     WHERE registrationNo='$registrationNo'";
     $con->query($sql);
 
