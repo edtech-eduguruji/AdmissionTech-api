@@ -54,3 +54,19 @@ ALTER TABLE `faculty_course_details`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
+
+ALTER TABLE `faculty_course_details` ADD `vocationalSem1` VARCHAR(500) 
+CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `major4`, 
+ADD `vocationalSem2` VARCHAR(500) CHARACTER SET utf8 COLLATE utf8_general_ci 
+NOT NULL AFTER `vocationalSem1`, ADD `coCurriculumSem1` VARCHAR(500) 
+CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `vocationalSem2`, 
+ADD `coCurriculumSem2` VARCHAR(500) CHARACTER SET utf8 COLLATE utf8_general_ci 
+NOT NULL AFTER `coCurriculumSem1`;
+
+ALTER TABLE `faculty_course_details` DROP `coCurriculum`;
+
+ALTER TABLE `faculty_course_details` DROP `vocationalSubject`;
+
+ALTER TABLE `payment` ADD `paymentId` VARCHAR(500) 
+CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `registrationNo`;
+

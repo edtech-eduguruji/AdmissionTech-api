@@ -12,7 +12,8 @@ $dob = $_POST['dob'];
 $name = $_POST['name'];
 $mobile = $_POST['mobile'];
 $random = substr(str_shuffle(MD5(microtime())), 0, 6);
-$registrationNo = 'AGA2021-'.$dob.'-'.$random;
+$registrationNo = 'AGA2021-' . $dob . '-' . $random;
+$paymentId = uniqid();
 
 //Time entry
 date_default_timezone_set('Asia/Kolkata');
@@ -33,10 +34,13 @@ $sql5 = "INSERT INTO documents (registrationNo, creationTime) VALUES ('$registra
 
 $sql6 = "INSERT INTO merit_details (registrationNo, creationTime) VALUES ('$registrationNo', '$creationTime')";
 
+$sql7 = "INSERT INTO payment (registrationNo,paymentId,status,creationTime) VALUES ('$registrationNo','$paymentId','0', '$creationTime')";
+
+
 
 if (
     $con->query($sql) && $con->query($sql1) && $con->query($sql2) && $con->query($sql3)
-    && $con->query($sql4) && $con->query($sql5) && $con->query($sql6)
+    && $con->query($sql4) && $con->query($sql5) && $con->query($sql6) && $con->query($sql7)
 ) {
     $data = array(
         'user_id' => $registrationNo, 'user_name' => $name,
