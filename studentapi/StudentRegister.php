@@ -12,7 +12,7 @@ $dob = $_POST['dob'];
 $name = $_POST['name'];
 $mobile = $_POST['mobile'];
 $random = substr(str_shuffle(MD5(microtime())), 0, 6);
-$registrationNo = 'AGA2021-' . $dob . '-' . $random;
+$registrationNo = 'AGA2021-'. $random;
 $paymentId = uniqid();
 
 //Time entry
