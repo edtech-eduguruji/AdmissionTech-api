@@ -88,5 +88,5 @@ if($billdesk_checksum==$gen_checksum) {
 }
 
 $dbConnection->closeConnection();
-header("Location: https://eduguruji.com/#/student/paymentinfo");
+header("Location: https://eduguruji.com/admission/#/paymentinfo");
 
