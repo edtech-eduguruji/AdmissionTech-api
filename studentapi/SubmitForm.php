@@ -169,11 +169,11 @@ if ($registrationNo == NULL || $registrationNo == '') {
 
     $sql1 = "INSERT INTO basic_details (registrationNo, vaccinated, nameTitle, name, dob, gender, religion, 
     caste, category, subCategory, categoryCertificate, subCategoryCertificate, personalMobile, 
-    parentMobile, aadharNo, email, mediumOfInstitution, photo, wrn, form, signature, submitted, payment, lastUpdated, creationTime) 
+    parentMobile, aadharNo, email, mediumOfInstitution, photo, wrn, form, signature, submitted, lastUpdated, creationTime) 
         VALUES ('$registrationNo', '$vaccinated', '$nameTitle', '$name', '$dob', '$gender', 
     '$religion', '$caste', '$category', '$subCategory', '$categoryCertificate', 
     '$subCategoryCertificate', '$personalMobile', '$parentMobile', '$aadharNo', '$email', 
-    '$mediumOfInstitution', '$photo', '$wrn', '$form', '$signature', '$submit', '0', '$creationTime','$creationTime')";
+    '$mediumOfInstitution', '$photo', '$wrn', '$form', '$signature', '$submit', '$creationTime','$creationTime')";
     //   echo $sql1;
     mysqli_query($con, $sql1);
 
@@ -223,7 +223,7 @@ if ($registrationNo == NULL || $registrationNo == '') {
     caste='$caste', category='$category', subCategory='$subCategory', categoryCertificate='$categoryCertificate', 
     subCategoryCertificate='$subCategoryCertificate', personalMobile='$personalMobile', parentMobile='$parentMobile', 
     aadharNo='$aadharNo', email='$email', mediumOfInstitution='$mediumOfInstitution', photo='$photo', wrn='$wrn', 
-    form='$form', signature='$signature', submitted='$submit', payment='0', lastUpdated='$creationTime'
+    form='$form', signature='$signature', submitted='$submit', lastUpdated='$creationTime'
     WHERE registrationNo='$registrationNo'";
     $con->query($sql1);
 
@@ -243,7 +243,7 @@ if ($registrationNo == NULL || $registrationNo == '') {
 
     $sql5 = "UPDATE merit_details SET
     nationalCompetition='$nationalCompetition', nationalCertificate='$nationalCertificate', 
-    otherCompetition='$otherCompetition ', otherCertificate='$otherCertificate', ncc='$ncc', 
+    otherCompetition='$otherCompetition', otherCertificate='$otherCertificate', ncc='$ncc', 
     nccCertificate='$nccCertificate', freedomFighter='$freedomFighter', nationalSevaScheme='$nationalSevaScheme', 
     nssDocument='$nssDocument', roverRanger='$roverRanger', otherRoverRanger='$otherRoverRanger', rrDocument='$rrDocument', 
     bcom='$bcom', other='$other', totalMeritCount='$totalMeritCount', lastUpdated='$creationTime' WHERE registrationNo='$registrationNo'";
