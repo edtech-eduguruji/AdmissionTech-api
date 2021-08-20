@@ -34,13 +34,11 @@ $sql5 = "INSERT INTO documents (registrationNo, creationTime) VALUES ('$registra
 
 $sql6 = "INSERT INTO merit_details (registrationNo, creationTime) VALUES ('$registrationNo', '$creationTime')";
 
-$sql7 = "INSERT INTO payment (registrationNo,paymentId,status,creationTime) VALUES ('$registrationNo','$paymentId','0', '$creationTime')";
-
-
+//$sql7 = "INSERT INTO payment (registrationNo,paymentId,status,creationTime) VALUES ('$registrationNo','$paymentId','0', '$creationTime')";
 
 if (
     $con->query($sql) && $con->query($sql1) && $con->query($sql2) && $con->query($sql3)
-    && $con->query($sql4) && $con->query($sql5) && $con->query($sql6) && $con->query($sql7)
+    && $con->query($sql4) && $con->query($sql5) && $con->query($sql6)
 ) {
     $data = array(
         'user_id' => $registrationNo, 'user_name' => $name,
