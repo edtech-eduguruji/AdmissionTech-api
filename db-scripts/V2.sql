@@ -36,3 +36,7 @@ ALTER TABLE `payment`
 ALTER TABLE `payment`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 COMMIT;
+
+
+
+ALTER TABLE `merit_details` ADD `uploadExtraMark` VARCHAR(1000) NOT NULL AFTER `other`;

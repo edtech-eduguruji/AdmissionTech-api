@@ -112,6 +112,7 @@ $signature = '';
 if (isset($_POST['signature'])) {
     $signature = $_POST['signature'];
 }
+$uploadExtraMark = $_POST['uploadExtraMark'];
 
 if (!file_exists("../uploads/" . $registrationNo)) {
     mkdir("../uploads/" . $registrationNo, 0777, true);
@@ -144,6 +145,12 @@ foreach ($_FILES as $key => $obj) {
                 $nssDocument = $dbPath;
             } else if ($key == 'signature') {
                 $signature = $dbPath;
+            }  else if ($key == 'otherCertificate') {
+                $otherCertificate = $dbPath;
+            }  else if ($key == 'rrDocument') {
+                $rrDocument = $dbPath;
+            }  else if ($key == 'uploadExtraMark') {
+                $uploadExtraMark = $dbPath;
             } else {
                 $documents[$count]['document'] = $dbPath;
                 $count = $count + 1;
@@ -198,11 +205,12 @@ if ($registrationNo == NULL || $registrationNo == '') {
     $sql5 = "INSERT INTO merit_details (registrationNo,
     nationalCompetition , nationalCertificate , otherCompetition , otherCertificate , 
     ncc , nccCertificate , freedomFighter , nationalSevaScheme , nssDocument , roverRanger , 
-    otherRoverRanger , rrDocument , bcom , other , totalMeritCount, lastUpdated, creationTIme) 
+    otherRoverRanger , rrDocument , bcom , other , uploadExtraMark, totalMeritCount, lastUpdated, creationTIme) 
         VALUES ('$registrationNo', 
     '$nationalCompetition' , '$nationalCertificate' , '$otherCompetition' , '$otherCertificate' , 
     '$ncc' , '$nccCertificate' , '$freedomFighter' , '$nationalSevaScheme' , '$nssDocument' , 
-    '$roverRanger' , '$otherRoverRanger' , '$rrDocument' , '$bcom' , '$other' , '$totalMeritCount', '$creationTime', '$creationTime')";
+    '$roverRanger' , '$otherRoverRanger' , '$rrDocument' , '$bcom' , '$other' , '$uploadExtraMark', 
+    '$totalMeritCount', '$creationTime', '$creationTime')";
     $con->query($sql5);
 
     $sql6 = "INSERT INTO users_info (user_id,user_name ,password ,role ,active) 
@@ -246,7 +254,7 @@ if ($registrationNo == NULL || $registrationNo == '') {
     otherCompetition='$otherCompetition', otherCertificate='$otherCertificate', ncc='$ncc', 
     nccCertificate='$nccCertificate', freedomFighter='$freedomFighter', nationalSevaScheme='$nationalSevaScheme', 
     nssDocument='$nssDocument', roverRanger='$roverRanger', otherRoverRanger='$otherRoverRanger', rrDocument='$rrDocument', 
-    bcom='$bcom', other='$other', totalMeritCount='$totalMeritCount', lastUpdated='$creationTime' WHERE registrationNo='$registrationNo'";
+    bcom='$bcom', other='$other', uploadExtraMark='$uploadExtraMark', totalMeritCount='$totalMeritCount', lastUpdated='$creationTime' WHERE registrationNo='$registrationNo'";
     $con->query($sql5);
 
     $sql6 = "UPDATE users_info SET password='$dob' WHERE user_id='$registrationNo'";
