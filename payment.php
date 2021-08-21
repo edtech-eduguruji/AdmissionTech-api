@@ -10,10 +10,9 @@ $myArray = explode('|', $data);
 $countVal = count($myArray);
 
 $billdesk_checksum = $myArray[$countVal-1];
-//echo $billdesk_checksum;
 
 array_splice($myArray, $countVal-1, $countVal);
-//print_r($myArray);
+//
 
 $str = implode('|', $myArray);
 //echo $str;
@@ -21,10 +20,10 @@ $str = implode('|', $myArray);
 $gen_checksum = hash_hmac('sha256',$str, $db['checksum'] , false);
 $gen_checksum = strtoupper($gen_checksum);
 
-        // MerchantID|UniqueTxnID|TxnReferenceNo|BankReferenceNo|TxnAmount|BankID|BIN|TxnT
-    // ype|CurrencyName|ItemCode|SecurityType|SecurityID|SecurityPassword|TxnDate|AuthStat
-    // us|SettlementType|AdditionalInfo1|AdditionalInfo2|AdditionalInfo3|AdditionalInfo4|Addition
-    // alInfo5|AdditionalInfo6|AdditionalInfo7|ErrorStatus|ErrorDescription|CheckSum
+// MerchantID|UniqueTxnID|TxnReferenceNo|BankReferenceNo|TxnAmount|BankID|BIN|TxnT
+// ype|CurrencyName|ItemCode|SecurityType|SecurityID|SecurityPassword|TxnDate|AuthStat
+// us|SettlementType|AdditionalInfo1|AdditionalInfo2|AdditionalInfo3|AdditionalInfo4|Addition
+// alInfo5|AdditionalInfo6|AdditionalInfo7|ErrorStatus|ErrorDescription|CheckSum
 
 $transTypeArray = array('01'=>'Netbanking',
     '02'=>'Credit Card',   
@@ -66,16 +65,15 @@ date_default_timezone_set('Asia/Kolkata');
 $creationTime = getCurrentTime();
 
 if($billdesk_checksum==$gen_checksum) {
+    $sql_query1 = "INSERT INTO payment (registrationNo, paymentId, TxnReferenceNo, BankReferenceNo, BankID, Bin, TxnAmount, 
+    TxnCode, TxnType, TxnDate, AuthStatusCode, AuthMsg, creationTime) 
+    VALUES ('$registrationNo', '$UniqueTxnID', '$TxnReferenceNo', '$BankReferenceNo', '$BankID', '$BIN', '$TxnAmount', 
+    '$TxnTypeCode', '$transTypeArray[$TxnTypeCode]', '$TxnDate', '$AuthStatusCode', '$authStatusArray[$AuthStatusCode]', '$creationTime')";
+
+    mysqli_query($con, $sql_query1);
     
     if($AuthStatusCode == "0300") {
-        $sql_query1 = "INSERT INTO payment (registrationNo, paymentId, TxnReferenceNo, BankReferenceNo, BankID, Bin, TxnAmount, 
-        TxnCode, TxnType, TxnDate, AuthStatusCode, AuthMsg, creationTime) 
-        VALUES ('$registrationNo', '$UniqueTxnID', '$TxnReferenceNo', '$BankReferenceNo', '$BankID', '$BIN', '$TxnAmount', 
-        '$TxnTypeCode', '$transTypeArray[$TxnTypeCode]', '$TxnDate', '$AuthStatusCode', '$authStatusArray[$AuthStatusCode]', '$creationTime')";
-        
         $sql_query2 = "UPDATE basic_details SET payment='1' WHERE registrationNo='$registrationNo'";
-        
-        mysqli_query($con, $sql_query1);
         mysqli_query($con, $sql_query2);
     }
 } else {
@@ -89,4 +87,3 @@ if($billdesk_checksum==$gen_checksum) {
 
 $dbConnection->closeConnection();
 header("Location: https://eduguruji.com/admission/#/paymentinfo");
-
