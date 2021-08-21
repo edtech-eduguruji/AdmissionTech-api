@@ -14,8 +14,5 @@ $result = mysqli_query($con, $sql_query);
 if (mysqli_num_rows($result) > 0) {
     $response = array(mysqli_fetch_assoc($result));
     echo json_encode($response);
-} else {
-    echo json_encode("");
-    header(' 500 Internal Server Error', true, 500);
 }
 $dbConnection->closeConnection();
