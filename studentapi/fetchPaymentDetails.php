@@ -8,7 +8,7 @@ $dbConnection = new DBConnection($db);
 $con = $dbConnection->getConnection();
 
 $registrationNo = $_GET['registrationNo'];
-$sql_query = "SELECT * from payment WHERE registrationNo='$registrationNo'";
+$sql_query = "SELECT * from payment WHERE registrationNo='$registrationNo' and AuthStatusCode='300' ";
 $result = mysqli_query($con, $sql_query);
 
 if (mysqli_num_rows($result) > 0) {
