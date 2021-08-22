@@ -21,16 +21,17 @@ $sql = "$query WHERE user_name = '$username' AND password = '$password' AND acti
 
 $result = $con->query($sql);
 $count = mysqli_num_rows($result);
-$response = array();
+$response = null;
 
 if ($count > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         if ($row['role'] == "ADMIN") {
             $row['fullname'] = "Admin";
         }
-        array_push($response, $row);
+        $response = $row;
     }
-    echo json_encode($response);
+    $jwt = createToken($response);
+    echo $jwt;
 } else {
     header(' 500 Internal Server Error', true, 500);
 }
