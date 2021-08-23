@@ -78,6 +78,7 @@ $user = array(
     'TxnTypeCode' => $TxnTypeCode,
     'TxnDate' => $TxnDate,
     'AuthStatusCode' => $AuthStatusCode,
+    'AuthMsg' => $authStatusArray[$AuthStatusCode],
     'PaymentFacultyId' => $PaymentFacultyId,
     'errorCode' => $errorCode,
     'errorDescription' => $errorDescription,
