@@ -46,7 +46,7 @@ $authStatusArray = array(
     $UniqueTxnID = $myArray[1];
     $TxnReferenceNo = $myArray[2];
     $BankReferenceNo = $myArray[3];
-    $TxnAmount = $myArray[4];
+    $TxnAmount =  substr($myArray[4],5,strlen($myArray[4]));
     $BankID = $myArray[5];
     $BIN = $myArray[6];
     $TxnTypeCode = $myArray[7];
@@ -93,6 +93,4 @@ $user = array(
 );
 
 $jwt = createToken($user);
-
-$dbConnection->closeConnection();
 header("Location: https://eduguruji.com/admission/?token=$jwt#/paymentinfo");
