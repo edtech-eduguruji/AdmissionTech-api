@@ -40,3 +40,5 @@ COMMIT;
 
 
 ALTER TABLE `merit_details` ADD `uploadExtraMark` VARCHAR(1000) NOT NULL AFTER `other`;
+
+ALTER TABLE `payment` ADD `checksum` VARCHAR(500) NOT NULL AFTER `creationTime`;

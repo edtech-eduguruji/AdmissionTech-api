@@ -12,6 +12,7 @@ $countVal = count($myArray);
 $billdesk_checksum = $myArray[$countVal-1];
 
 array_splice($myArray, $countVal-1, $countVal);
+//
 
 $str = implode('|', $myArray);
 //echo $str;
@@ -36,6 +37,7 @@ $transTypeArray = array('01'=>'Netbanking',
     '10'=>'UPI');    
     
     // Type Transaction
+    
 $authStatusArray = array( 
     '0300'=>'Success Transaction',
     '0399'=>'Invalid Authentication at Bank Failure Transaction',
@@ -57,41 +59,33 @@ $authStatusArray = array(
     $errorCode = $myArray[22];
     $errorDescription = $myArray[23];
 
+$dbConnection = new DBConnection($db);
+$con = $dbConnection->getConnection();
+
 //Time entry
 date_default_timezone_set('Asia/Kolkata');
 $creationTime = getCurrentTime();
-$payment = '0';
 
 if($billdesk_checksum==$gen_checksum) {
+    $sql_query1 = "INSERT INTO payment (registrationNo, paymentId, TxnReferenceNo, BankReferenceNo, BankID, Bin, TxnAmount, 
+    TxnCode, TxnType, TxnDate, AuthStatusCode, AuthMsg, creationTime, checksum) 
+    VALUES ('$registrationNo', '$UniqueTxnID', '$TxnReferenceNo', '$BankReferenceNo', '$BankID', '$BIN', '$TxnAmount', 
+    '$TxnTypeCode', '$transTypeArray[$TxnTypeCode]', '$TxnDate', '$AuthStatusCode', '$authStatusArray[$AuthStatusCode]', 
+    '$creationTime', '$data')";
+
+    mysqli_query($con, $sql_query1);
+    
     if($AuthStatusCode == "0300") {
-        $payment = '1';
+        $sql_query2 = "UPDATE basic_details SET payment='1' WHERE registrationNo='$registrationNo'";
+        mysqli_query($con, $sql_query2);
     }
+} else {
+    $sql_query1 = "INSERT INTO payment (registrationNo, paymentId, TxnReferenceNo, BankReferenceNo, BankID, Bin, TxnAmount, 
+    TxnCode, TxnType, TxnDate, AuthStatusCode, AuthMsg, creationTime, checksum) 
+    VALUES ('$registrationNo', '$UniqueTxnID', '$TxnReferenceNo', '$BankReferenceNo', '$BankID', '$BIN', '$TxnAmount', 
+    '$TxnTypeCode', '$transTypeArray[$TxnTypeCode]', '$TxnDate', '$errorCode', '$errorDescription', '$creationTime', '$data' )";
+    
+    mysqli_query($con, $sql_query1);
 }
 
-$user = array(
-    'UniqueTxnID' => $UniqueTxnID,
-    'TxnReferenceNo' => $TxnReferenceNo,
-    'BankReferenceNo' => $BankReferenceNo,
-    'TxnAmount' => $TxnAmount,
-    'BankID' => $BankID,
-    'BIN' => $BIN,
-    'TxnTypeCode' => $TxnTypeCode,
-    'TxnDate' => $TxnDate,
-    'AuthStatusCode' => $AuthStatusCode,
-    'PaymentFacultyId' => $PaymentFacultyId,
-    'errorCode' => $errorCode,
-    'errorDescription' => $errorDescription,
-
-    'registrationNo' => $registrationNo,
-    'payment' => $payment,
-    'submitted' => '0',
-    'role' => 'STUDENT',
-    'active' => '1',
-    'user_name' => $registrationNo,
-    'user_id' => $registrationNo
-);
-
-$jwt = createToken($user);
-
 $dbConnection->closeConnection();
-header("Location: https://eduguruji.com/admission/?token=$jwt#/paymentinfo");
