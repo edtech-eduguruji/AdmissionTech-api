@@ -2,16 +2,13 @@
 require('AppHeaders.php');
 include_once('DBConnection.php');
 include_once('utils.php');
-
-// $dbConnection = new DBConnection($db);
-// $con = $dbConnection->getConnection();
+$db = parse_ini_file(dirname(__DIR__) . "/api/DbProperties.ini");
 
 $requestMethod = $_SERVER['REQUEST_METHOD'];
-
 switch ($requestMethod) {
     case "POST":
         $str = $_POST['str'];
-        $checksum = hash_hmac('sha256',$str,'G3eAmyVkAzKp8jFq0fqPEqxF4agynvtJ', false);
+        $checksum = hash_hmac('sha256',$str, $db['checksum'], false);
         $checksum = strtoupper($checksum);
         echo ($checksum);
         break;
