@@ -262,9 +262,9 @@ if ($registrationNo == NULL || $registrationNo == '') {
 }
 
 $data = array(
-    'registrationNo' => $registrationNo, 'active' => "1",
+    'registrationNo' => $registrationNo, 'active' => "1", 'submitted'=> $submit,
     'role' => "STUDENT", 'user_id' => $registrationNo, 'user_name' => $registrationNo
 );
 
 $dbConnection->closeConnection();
-echo json_encode($data);
+echo createToken($data);

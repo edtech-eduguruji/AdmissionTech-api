@@ -44,8 +44,10 @@ if (
         'user_id' => $registrationNo, 'user_name' => $name,
         'password' => $dob, 'fullname' => $name, 'submitted' => "0", 'payment' => "0", 'role' => "STUDENT"
     );
+
+    $jwt = createToken($data);
+    echo $jwt;
 } else {
     header(' 500 Internal Server Error', true, 500);
 }
-echo json_encode($data);
 $dbConnection->closeConnection();

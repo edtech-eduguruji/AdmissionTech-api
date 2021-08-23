@@ -63,6 +63,7 @@ $con = $dbConnection->getConnection();
 //Time entry
 date_default_timezone_set('Asia/Kolkata');
 $creationTime = getCurrentTime();
+$jwt = null;
 
 if($billdesk_checksum==$gen_checksum) {
     $sql_query1 = "INSERT INTO payment (registrationNo, paymentId, TxnReferenceNo, BankReferenceNo, BankID, Bin, TxnAmount, 
@@ -75,6 +76,19 @@ if($billdesk_checksum==$gen_checksum) {
     if($AuthStatusCode == "0300") {
         $sql_query2 = "UPDATE basic_details SET payment='1' WHERE registrationNo='$registrationNo'";
         mysqli_query($con, $sql_query2);
+
+        $sql_query3 = "SELECT payment.*, basic_details.submitted,basic_details.payment,users_info.user_id,users_info.user_name,
+        users_info.password,users_info.role,users_info.active FROM users_info 
+        INNER JOIN basic_details ON users_info.user_id = basic_details.registrationNo 
+        INNER JOIN payment ON payment.registrationNo = basic_details.registrationNo 
+        WHERE payment.registrationNo='$registrationNo' and AuthStatusCode='300' ";
+
+        $result = mysqli_query($con, $sql_query3);
+
+        if (mysqli_num_rows($result) > 0) {
+            $response = array(mysqli_fetch_assoc($result));
+            $jwt = createToken($response);
+        }
     }
 } else {
     $sql_query1 = "INSERT INTO payment (registrationNo, paymentId, TxnReferenceNo, BankReferenceNo, BankID, Bin, TxnAmount, 
@@ -86,4 +100,4 @@ if($billdesk_checksum==$gen_checksum) {
 }
 
 $dbConnection->closeConnection();
-header("Location: https://eduguruji.com/admission/#/paymentinfo");
+header("Location: https://eduguruji.com/admission/?token=$jwt#/paymentinfo");
