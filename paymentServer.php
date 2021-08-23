@@ -38,17 +38,17 @@ $transTypeArray = array('01'=>'Netbanking',
     
     // Type Transaction
     
-$authStatusArray = array( 
-    '0300'=>'Success Transaction',
-    '0399'=>'Invalid Authentication at Bank Failure Transaction',
-    'NA'=>'Invalid Input in the Request Message Failure Transaction',
-    '0002'=>'BillDesk is waiting for Response from Bank Pending Transaction',
-    '0001'=>'Error at BillDesk');
+    $authStatusArray = array( 
+        '0300'=>'Success',
+        '0399'=>'Failure',
+        'NA'=>'Failure',
+        '0002'=>'Pending',
+        '0001'=>'Failure');
 
     $UniqueTxnID = $myArray[1];
     $TxnReferenceNo = $myArray[2];
     $BankReferenceNo = $myArray[3];
-    $TxnAmount = $myArray[4];
+    $TxnAmount = substr($myArray[4],5,strlen($myArray[4]));
     $BankID = $myArray[5];
     $BIN = $myArray[6];
     $TxnTypeCode = $myArray[7];
