@@ -86,7 +86,7 @@ if($billdesk_checksum==$gen_checksum) {
         $result = mysqli_query($con, $sql_query3);
 
         if (mysqli_num_rows($result) > 0) {
-            $response = array(mysqli_fetch_assoc($result));
+            $response = (mysqli_fetch_assoc($result));
             $jwt = createToken($response);
         }
     }

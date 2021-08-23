@@ -262,7 +262,7 @@ if ($registrationNo == NULL || $registrationNo == '') {
 }
 
 $data = array(
-    'registrationNo' => $registrationNo, 'active' => "1", 'submitted'=> $submit,
+    'registrationNo' => $registrationNo, 'active' => "1", 'submitted'=> $submit, 'payment' => '1',
     'role' => "STUDENT", 'user_id' => $registrationNo, 'user_name' => $registrationNo
 );
 

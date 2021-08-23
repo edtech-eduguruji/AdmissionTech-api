@@ -18,7 +18,7 @@ WHERE payment.registrationNo='$registrationNo' and AuthStatusCode='300' ";
 $result = mysqli_query($con, $sql_query);
 
 if (mysqli_num_rows($result) > 0) {
-    $response = array(mysqli_fetch_assoc($result));
+    $response = (mysqli_fetch_assoc($result));
     echo createToken($response);
 }
 $dbConnection->closeConnection();
