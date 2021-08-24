@@ -3,22 +3,18 @@
 require('AppHeaders.php');
 include_once('DBConnection.php');
 include_once('utils.php');
-$db = parse_ini_file(dirname(__DIR__) . "/api/DbProperties.ini");
+include_once('checksum.php');
 
 $data = $_POST['msg'];
 $myArray = explode('|', $data);
 $countVal = count($myArray);
 
 $billdesk_checksum = $myArray[$countVal-1];
-
 array_splice($myArray, $countVal-1, $countVal);
-//
-
 $str = implode('|', $myArray);
 //echo $str;
 
-$gen_checksum = hash_hmac('sha256',$str, $db['checksum'] , false);
-$gen_checksum = strtoupper($gen_checksum);
+$gen_checksum = createCheckSum($str);
 
 // MerchantID|UniqueTxnID|TxnReferenceNo|BankReferenceNo|TxnAmount|BankID|BIN|TxnT
 // ype|CurrencyName|ItemCode|SecurityType|SecurityID|SecurityPassword|TxnDate|AuthStat
