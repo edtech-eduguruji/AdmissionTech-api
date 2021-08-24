@@ -3,7 +3,6 @@
 require('AppHeaders.php');
 include_once('DBConnection.php');
 include_once('utils.php');
-include_once('checksum.php');
 
 $data = $_POST['msg'];
 $myArray = explode('|', $data);
