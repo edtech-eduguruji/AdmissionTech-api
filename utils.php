@@ -1,6 +1,9 @@
 <?php
-require "vendor/autoload.php";
+
 use \Firebase\JWT\JWT;
+
+require "vendor/Base64UrlEncoder.php";
+require "vendor/autoload.php";
 
 date_default_timezone_set('Asia/Kolkata');
 function getCurrentTime()
@@ -28,29 +31,53 @@ function verifyUser($userId, $con)
         header('HTTP/1.0 401 Unauthorized');
     }
 }
-function createCheckSum($str) {
+function createCheckSum($str)
+{
     $db = parse_ini_file(dirname(__DIR__) . "/api/DbProperties.ini");
-    
-    $checksum = hash_hmac('sha256',$str, $db['checksum'], false);
+
+    $checksum = hash_hmac('sha256', $str, $db['checksum'], false);
     $checksum = strtoupper($checksum);
     return $checksum;
 }
 
-function createToken($userInfo) {
-    $secret_key = "YOUR_SECRET_KEY";
-    $issuer_claim = "THE_ISSUER"; // this can be the servername
-    $audience_claim = "THE_AUDIENCE";
-    $issuedat_claim = time(); // issued at
-    $notbefore_claim = $issuedat_claim + 10; //not before in seconds
-    //$expire_claim = $issuedat_claim + 60; // expire time in seconds
+function createToken($userInfo)
+{
+    $secret_key = "Kushal-Maharaj-Ki-Jai";
+    $issuer_claim = "AdmissionTech";
+    $audience_claim = "Users";
+    $issuedat_claim = time();
+    $notbefore_claim = $issuedat_claim + 10;
     $token = array(
         "iss" => $issuer_claim,
         "aud" => $audience_claim,
         "iat" => $issuedat_claim,
         "nbf" => $notbefore_claim,
-        //"exp" => $expire_claim,
         'data' => $userInfo
     );
     $jwt = JWT::encode($token, $secret_key);
     return $jwt;
+}
+
+function verifyToken($jwt)
+{
+    // Spliting the token
+    $tokenParts = explode('.', $jwt);
+    $header = base64_decode($tokenParts[0]);
+    $payload = base64_decode($tokenParts[1]);
+    $signatureProvided = $tokenParts[2];
+
+    // Building a signature based on the header and payload using the secret key
+    $base64UrlHeader = base64UrlEncode($header);
+    $base64UrlPayload = base64UrlEncode($payload);
+    $signature = hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, 'Kushal-Maharaj-Ki-Jai', true);
+    $base64UrlSignature = base64UrlEncode($signature);
+
+    // verify it matches the signature provided in the token
+    $signatureValid = ($base64UrlSignature === $signatureProvided);
+
+    if (!$signatureValid) {
+        return false;
+    } else {
+        return true;
+    }
 }
