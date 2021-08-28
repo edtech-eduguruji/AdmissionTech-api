@@ -29,9 +29,6 @@ CHARACTER SET utf8 COLLATE utf8_general_ci
 NOT NULL AFTER `totalMeritCount`, ADD `creationTime` VARCHAR(500) 
 CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `lastUpdated`;
 
-ALTER TABLE `payment` ADD `creationTime` 
-VARCHAR(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `status`;
-
 CREATE TABLE `faculty_course_details` (
   `id` int(11) NOT NULL,
   `registrationNo` varchar(500) NOT NULL,
@@ -66,7 +63,3 @@ NOT NULL AFTER `coCurriculumSem1`;
 ALTER TABLE `faculty_course_details` DROP `coCurriculum`;
 
 ALTER TABLE `faculty_course_details` DROP `vocationalSubject`;
-
-ALTER TABLE `payment` ADD `paymentId` VARCHAR(500) 
-CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `registrationNo`;
-
