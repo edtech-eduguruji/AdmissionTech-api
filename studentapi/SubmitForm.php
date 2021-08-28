@@ -112,6 +112,7 @@ $signature = '';
 if (isset($_POST['signature'])) {
     $signature = $_POST['signature'];
 }
+$uploadExtraMark = $_POST['uploadExtraMark'];
 
 if (!file_exists("../uploads/" . $registrationNo)) {
     mkdir("../uploads/" . $registrationNo, 0777, true);
@@ -144,6 +145,12 @@ foreach ($_FILES as $key => $obj) {
                 $nssDocument = $dbPath;
             } else if ($key == 'signature') {
                 $signature = $dbPath;
+            }  else if ($key == 'otherCertificate') {
+                $otherCertificate = $dbPath;
+            }  else if ($key == 'rrDocument') {
+                $rrDocument = $dbPath;
+            }  else if ($key == 'uploadExtraMark') {
+                $uploadExtraMark = $dbPath;
             } else {
                 $documents[$count]['document'] = $dbPath;
                 $count = $count + 1;
@@ -169,11 +176,11 @@ if ($registrationNo == NULL || $registrationNo == '') {
 
     $sql1 = "INSERT INTO basic_details (registrationNo, vaccinated, nameTitle, name, dob, gender, religion, 
     caste, category, subCategory, categoryCertificate, subCategoryCertificate, personalMobile, 
-    parentMobile, aadharNo, email, mediumOfInstitution, photo, wrn, form, signature, submitted, payment, lastUpdated, creationTime) 
+    parentMobile, aadharNo, email, mediumOfInstitution, photo, wrn, form, signature, submitted, lastUpdated, creationTime) 
         VALUES ('$registrationNo', '$vaccinated', '$nameTitle', '$name', '$dob', '$gender', 
     '$religion', '$caste', '$category', '$subCategory', '$categoryCertificate', 
     '$subCategoryCertificate', '$personalMobile', '$parentMobile', '$aadharNo', '$email', 
-    '$mediumOfInstitution', '$photo', '$wrn', '$form', '$signature', '$submit', '0', '$creationTime','$creationTime')";
+    '$mediumOfInstitution', '$photo', '$wrn', '$form', '$signature', '$submit', '$creationTime','$creationTime')";
     //   echo $sql1;
     mysqli_query($con, $sql1);
 
@@ -198,11 +205,12 @@ if ($registrationNo == NULL || $registrationNo == '') {
     $sql5 = "INSERT INTO merit_details (registrationNo,
     nationalCompetition , nationalCertificate , otherCompetition , otherCertificate , 
     ncc , nccCertificate , freedomFighter , nationalSevaScheme , nssDocument , roverRanger , 
-    otherRoverRanger , rrDocument , bcom , other , totalMeritCount, lastUpdated, creationTIme) 
+    otherRoverRanger , rrDocument , bcom , other , uploadExtraMark, totalMeritCount, lastUpdated, creationTIme) 
         VALUES ('$registrationNo', 
     '$nationalCompetition' , '$nationalCertificate' , '$otherCompetition' , '$otherCertificate' , 
     '$ncc' , '$nccCertificate' , '$freedomFighter' , '$nationalSevaScheme' , '$nssDocument' , 
-    '$roverRanger' , '$otherRoverRanger' , '$rrDocument' , '$bcom' , '$other' , '$totalMeritCount', '$creationTime', '$creationTime')";
+    '$roverRanger' , '$otherRoverRanger' , '$rrDocument' , '$bcom' , '$other' , '$uploadExtraMark', 
+    '$totalMeritCount', '$creationTime', '$creationTime')";
     $con->query($sql5);
 
     $sql6 = "INSERT INTO users_info (user_id,user_name ,password ,role ,active) 
@@ -223,7 +231,7 @@ if ($registrationNo == NULL || $registrationNo == '') {
     caste='$caste', category='$category', subCategory='$subCategory', categoryCertificate='$categoryCertificate', 
     subCategoryCertificate='$subCategoryCertificate', personalMobile='$personalMobile', parentMobile='$parentMobile', 
     aadharNo='$aadharNo', email='$email', mediumOfInstitution='$mediumOfInstitution', photo='$photo', wrn='$wrn', 
-    form='$form', signature='$signature', submitted='$submit', payment='0', lastUpdated='$creationTime'
+    form='$form', signature='$signature', submitted='$submit', lastUpdated='$creationTime'
     WHERE registrationNo='$registrationNo'";
     $con->query($sql1);
 
@@ -243,10 +251,10 @@ if ($registrationNo == NULL || $registrationNo == '') {
 
     $sql5 = "UPDATE merit_details SET
     nationalCompetition='$nationalCompetition', nationalCertificate='$nationalCertificate', 
-    otherCompetition='$otherCompetition ', otherCertificate='$otherCertificate', ncc='$ncc', 
+    otherCompetition='$otherCompetition', otherCertificate='$otherCertificate', ncc='$ncc', 
     nccCertificate='$nccCertificate', freedomFighter='$freedomFighter', nationalSevaScheme='$nationalSevaScheme', 
     nssDocument='$nssDocument', roverRanger='$roverRanger', otherRoverRanger='$otherRoverRanger', rrDocument='$rrDocument', 
-    bcom='$bcom', other='$other', totalMeritCount='$totalMeritCount', lastUpdated='$creationTime' WHERE registrationNo='$registrationNo'";
+    bcom='$bcom', other='$other', uploadExtraMark='$uploadExtraMark', totalMeritCount='$totalMeritCount', lastUpdated='$creationTime' WHERE registrationNo='$registrationNo'";
     $con->query($sql5);
 
     $sql6 = "UPDATE users_info SET password='$dob' WHERE user_id='$registrationNo'";
@@ -254,9 +262,9 @@ if ($registrationNo == NULL || $registrationNo == '') {
 }
 
 $data = array(
-    'registrationNo' => $registrationNo, 'active' => "1",
+    'registrationNo' => $registrationNo, 'active' => "1", 'submitted'=> $submit, 'payment' => '1',
     'role' => "STUDENT", 'user_id' => $registrationNo, 'user_name' => $registrationNo
 );
 
 $dbConnection->closeConnection();
-echo json_encode($data);
+echo createToken($data);

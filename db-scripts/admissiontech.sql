@@ -138,18 +138,6 @@ CREATE TABLE `merit_details` (
 
 -- --------------------------------------------------------
 
---
--- Table structure for table `payment`
---
-
-CREATE TABLE `payment` (
-  `id` int(100) NOT NULL,
-  `registrationNo` varchar(100) NOT NULL,
-  `payment_date` varchar(100) NOT NULL,
-  `mode` varchar(100) NOT NULL,
-  `amount` varchar(20) NOT NULL,
-  `status` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -195,11 +183,7 @@ ALTER TABLE `documents`
 ALTER TABLE `merit_details`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `payment`
---
-ALTER TABLE `payment`
-  ADD PRIMARY KEY (`id`);
+
 
 --
 -- Indexes for table `users_info`
@@ -237,11 +221,6 @@ ALTER TABLE `documents`
 ALTER TABLE `merit_details`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT for table `payment`
---
-ALTER TABLE `payment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users_info`
