@@ -66,7 +66,3 @@ NOT NULL AFTER `coCurriculumSem1`;
 ALTER TABLE `faculty_course_details` DROP `coCurriculum`;
 
 ALTER TABLE `faculty_course_details` DROP `vocationalSubject`;
-
-ALTER TABLE `payment` ADD `paymentId` VARCHAR(500) 
-CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `registrationNo`;
-
