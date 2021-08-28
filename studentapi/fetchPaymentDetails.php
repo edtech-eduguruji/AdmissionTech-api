@@ -13,7 +13,7 @@ $sql_query = "SELECT payment.*, basic_details.submitted,basic_details.payment,us
 users_info.password,users_info.role,users_info.active FROM users_info 
 INNER JOIN basic_details ON users_info.user_id = basic_details.registrationNo 
 INNER JOIN payment ON payment.registrationNo = basic_details.registrationNo 
-WHERE payment.registrationNo='$registrationNo' and AuthStatusCode='300' and basic_details.payment='1' ";
+WHERE payment.registrationNo='$registrationNo' and AuthStatusCode='0300' and basic_details.payment='1' ";
 
 $result = mysqli_query($con, $sql_query);
 

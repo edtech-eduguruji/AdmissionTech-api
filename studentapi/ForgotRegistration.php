@@ -10,8 +10,7 @@ $con = $dbConnection->getConnection();
 $phone = $_GET['phone'];
 $dob = $_GET['dob'];
 
-$sql_query = "SELECT registrationNo from basic_details WHERE 
-personalMobile = '$phone' AND dob = '$dob'";
+$sql_query = "SELECT registrationNo from basic_details WHERE personalMobile = '$phone' AND dob = '$dob'";
 
 $result = mysqli_query($con, $sql_query);
 
