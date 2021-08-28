@@ -91,4 +91,4 @@ $user = array(
 );
 
 $jwt = createToken($user);
-header("Location: https://eduguruji.com/admission/?token=$jwt#/paymentinfo");
+header("Location: https://admission.agracollegeagra.org.in/?token=$jwt#/paymentinfo");

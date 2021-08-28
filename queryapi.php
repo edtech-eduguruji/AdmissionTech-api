@@ -22,7 +22,7 @@ $date = date('YmdHms', time());
 
 $postfields = ["msg"=> $msg];
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_URL,"https://uat.billdesk.com/pgidsk/PGIQueryController");
+curl_setopt($ch, CURLOPT_URL,"https://www.billdesk.com/pgidsk/PGIQueryController");
 // curl_setopt($ch, CURLOPT_URL,"https://eduguruji.com/admission/api/queryapi.php");
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
