@@ -9,11 +9,13 @@ $myArray = explode('|', $data);
 $countVal = count($myArray);
 
 $billdesk_checksum = $myArray[$countVal-1];
+$billdesk_checksum = trim($billdesk_checksum);
 array_splice($myArray, $countVal-1, $countVal);
 $str = implode('|', $myArray);
 //echo $str;
 
 $gen_checksum = createCheckSum($str);
+$gen_checksum = trim($gen_checksum);
 
 // MerchantID|UniqueTxnID|TxnReferenceNo|BankReferenceNo|TxnAmount|BankID|BIN|TxnT
 // ype|CurrencyName|ItemCode|SecurityType|SecurityID|SecurityPassword|TxnDate|AuthStat

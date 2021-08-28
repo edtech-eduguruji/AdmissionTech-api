@@ -19,7 +19,7 @@ $paymentId = uniqid();
 date_default_timezone_set('Asia/Kolkata');
 $creationTime = getCurrentTime();
 
-$query = "SELECT count(personalMobile) as counts FROM basic_details WHERE personalMobile='$mobile'";
+$query = "SELECT count(personalMobile) as counts FROM basic_details WHERE personalMobile='$mobile' and dob='$dob' ";
 
 $res = mysqli_query($con, $query);
 $count = mysqli_fetch_assoc($res);

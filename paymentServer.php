@@ -4,16 +4,23 @@ require('AppHeaders.php');
 include_once('DBConnection.php');
 include_once('utils.php');
 
+error_log("----------------------------------------------------------------");
 $data = $_POST['msg'];
+error_log("msg: " . $data);
+
 $myArray = explode('|', $data);
 $countVal = count($myArray);
 
 $billdesk_checksum = $myArray[$countVal-1];
+$billdesk_checksum = trim($billdesk_checksum);
 array_splice($myArray, $countVal-1, $countVal);
 $str = implode('|', $myArray);
-//echo $str;
 
 $gen_checksum = createCheckSum($str);
+$gen_checksum = trim($gen_checksum);
+
+error_log("billdesk_checksum: " . $billdesk_checksum);
+error_log("gen_checksum: " . $gen_checksum);
 
 // MerchantID|UniqueTxnID|TxnReferenceNo|BankReferenceNo|TxnAmount|BankID|BIN|TxnT
 // ype|CurrencyName|ItemCode|SecurityType|SecurityID|SecurityPassword|TxnDate|AuthStat
@@ -61,7 +68,8 @@ $con = $dbConnection->getConnection();
 date_default_timezone_set('Asia/Kolkata');
 $creationTime = getCurrentTime();
 
-if($billdesk_checksum==$gen_checksum) {
+if(strcmp($billdesk_checksum, $gen_checksum)==0) {
+    
     $sql_query1 = "INSERT INTO payment (registrationNo, paymentId, TxnReferenceNo, BankReferenceNo, BankID, Bin, TxnAmount, 
     TxnCode, TxnType, TxnDate, AuthStatusCode, AuthMsg, creationTime, checksum) 
     VALUES ('$registrationNo', '$UniqueTxnID', '$TxnReferenceNo', '$BankReferenceNo', '$BankID', '$BIN', '$TxnAmount', 
@@ -70,11 +78,15 @@ if($billdesk_checksum==$gen_checksum) {
 
     mysqli_query($con, $sql_query1);
     
+    error_log("checksum matched and query executed: ". $sql_query1);
+
     if($AuthStatusCode == "0300") {
+        error_log("AuthStatusCode success");
         $sql_query2 = "UPDATE basic_details SET payment='1' WHERE registrationNo='$registrationNo'";
         mysqli_query($con, $sql_query2);
     }
 } else {
+    error_log("checksum not matched");
     $sql_query1 = "INSERT INTO payment (registrationNo, paymentId, TxnReferenceNo, BankReferenceNo, BankID, Bin, TxnAmount, 
     TxnCode, TxnType, TxnDate, AuthStatusCode, AuthMsg, creationTime, checksum) 
     VALUES ('$registrationNo', '$UniqueTxnID', '$TxnReferenceNo', '$BankReferenceNo', '$BankID', '$BIN', '$TxnAmount', 
@@ -82,5 +94,6 @@ if($billdesk_checksum==$gen_checksum) {
     
     mysqli_query($con, $sql_query1);
 }
+error_log("----------------------------------------------------------------");
 
 $dbConnection->closeConnection();
