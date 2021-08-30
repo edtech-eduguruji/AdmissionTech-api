@@ -112,7 +112,10 @@ $signature = '';
 if (isset($_POST['signature'])) {
     $signature = $_POST['signature'];
 }
-$uploadExtraMark = $_POST['uploadExtraMark'];
+$uploadExtraMark = '';
+if (isset($_POST['uploadExtraMark'])) {
+    $uploadExtraMark = $_POST['uploadExtraMark'];
+}
 
 if (!file_exists("../uploads/" . $registrationNo)) {
     mkdir("../uploads/" . $registrationNo, 0777, true);
@@ -145,15 +148,15 @@ foreach ($_FILES as $key => $obj) {
                 $nssDocument = $dbPath;
             } else if ($key == 'signature') {
                 $signature = $dbPath;
-            }  else if ($key == 'otherCertificate') {
+            } else if ($key == 'otherCertificate') {
                 $otherCertificate = $dbPath;
-            }  else if ($key == 'rrDocument') {
+            } else if ($key == 'rrDocument') {
                 $rrDocument = $dbPath;
-            }  else if ($key == 'uploadExtraMark') {
+            } else if ($key == 'uploadExtraMark') {
                 $uploadExtraMark = $dbPath;
-            } else {
+            } else{
                 $documents[$count]['document'] = $dbPath;
-                $count = $count + 1;
+                $count++;
             }
         }
     }
@@ -262,7 +265,7 @@ if ($registrationNo == NULL || $registrationNo == '') {
 }
 
 $data = array(
-    'registrationNo' => $registrationNo, 'active' => "1", 'submitted'=> $submit, 'payment' => '1',
+    'registrationNo' => $registrationNo, 'active' => "1", 'submitted' => $submit, 'payment' => '1',
     'role' => "STUDENT", 'user_id' => $registrationNo, 'user_name' => $registrationNo
 );
 

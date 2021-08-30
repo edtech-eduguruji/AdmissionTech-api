@@ -50,7 +50,7 @@ $transTypeArray = array('01'=>'Netbanking',
     $UniqueTxnID = $myArray[1];
     $TxnReferenceNo = $myArray[2];
     $BankReferenceNo = $myArray[3];
-    $TxnAmount = substr($myArray[4],5,strlen($myArray[4]));
+    $TxnAmount = ltrim($myArray[4], "0");
     $BankID = $myArray[5];
     $BIN = $myArray[6];
     $TxnTypeCode = $myArray[7];
