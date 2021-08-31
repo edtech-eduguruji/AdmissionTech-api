@@ -130,7 +130,7 @@ foreach ($_FILES as $key => $obj) {
     $uniquename = $key . $creationTime . '.' . $fileext;
     $uploaded = "../uploads/" . $registrationNo . "/" . $uniquename;
     $dbPath = "uploads/" . $registrationNo . "/" . $uniquename;
-    if ($filetype == "image/png" || $filetype == "image/jpeg" || $filetype == "image/jpg" || $file_type == "application/pdf") {
+    if ($filetype == "image/png" || $filetype == "image/jpeg" || $filetype == "image/jpg" || $filetype == "application/pdf") {
         if (move_uploaded_file($temp, $uploaded)) {
             if ($key == 'form') {
                 $form = $dbPath;
