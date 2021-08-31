@@ -171,6 +171,11 @@ $academicDetails = json_encode($academicDetails);
 $major1 = json_encode($major1);
 $major2 = json_encode($major2);
 
+if($submit=='1') {
+    if(!$form && !$photo && !$signature) {
+        header('HTTP/1.0 406 Unacceptable');
+    }
+}
 
 if ($registrationNo == NULL || $registrationNo == '') {
     $registrationNo = uniqid();
