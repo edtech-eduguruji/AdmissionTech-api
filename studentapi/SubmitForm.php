@@ -18,6 +18,10 @@ $registrationNo = $_POST['registrationNo'];
 $submit = $_POST['submit'];
 $count = 0;
 
+error_log($submit.' ::$registrationNo:: '.$registrationNo);
+error_log(json_encode($_FILES));
+error_log(json_encode($_POST));
+
 $faculty = $_POST['faculty'];
 $courseType = $_POST['courseType'];
 $major1 = json_decode($_POST['major1'], true);
