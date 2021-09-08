@@ -18,7 +18,7 @@ $registrationNo = $_POST['registrationNo'];
 $submit = $_POST['submit'];
 $count = 0;
 
-error_log($submit.' ::$registrationNo:: '.$registrationNo);
+error_log($submit . ' ::$registrationNo:: ' . $registrationNo);
 error_log(json_encode($_FILES));
 error_log(json_encode($_POST));
 
@@ -35,10 +35,10 @@ $coCurriculumSem2 = $_POST['coCurriculumSem2'];
 $mediumOfInstitution = $_POST['mediumOfInstitution'];
 $vaccinated = $_POST['vaccinated'];
 $nameTitle = $_POST['nameTitle'];
-$name = $_POST['name'];
+$name = $con->real_escape_string($_POST['name']);
 $dob = $_POST['dob'];
 $gender = $_POST['gender'];
-$caste = $_POST['caste'];
+$caste = $con->real_escape_string($_POST['caste']);
 $religion = $_POST['religion'];
 $personalMobile = $_POST['personalMobile'];
 $parentMobile = $_POST['parentMobile'];
@@ -54,20 +54,20 @@ $photo = '';
 if (isset($_POST['photo'])) {
     $photo = $_POST['photo'];
 }
-$houseNo = $_POST['houseNo'];
-$street = $_POST['street'];
+$houseNo = $con->real_escape_string($_POST['houseNo']);
+$street = $con->real_escape_string($_POST['street']);
 $pincode = $_POST['pincode'];
-$postOffice = $_POST['postOffice'];
+$postOffice = $con->real_escape_string($_POST['postOffice']);
 $state = $_POST['state'];
 $city = $_POST['city'];
-$cHouseNo = $_POST['cHouseNo'];
-$cStreet = $_POST['cStreet'];
+$cHouseNo = $con->real_escape_string($_POST['cHouseNo']);
+$cStreet = $con->real_escape_string($_POST['cStreet']);
 $cPincode = $_POST['cPincode'];
-$cPostOffice = $_POST['cPostOffice'];
+$cPostOffice = $con->real_escape_string($_POST['cPostOffice']);
 $cState = $_POST['cState'];
 $cCity = $_POST['cCity'];
 $aadharNo = $_POST['aadharNo'];
-$email = $_POST['email'];
+$email = $con->real_escape_string($_POST['email']);
 $category = $_POST['category'];
 $subCategory = $_POST['subCategory'];
 $categoryCertificate = '';
@@ -158,7 +158,7 @@ foreach ($_FILES as $key => $obj) {
                 $rrDocument = $dbPath;
             } else if ($key == 'uploadExtraMark') {
                 $uploadExtraMark = $dbPath;
-            } else{
+            } else {
                 $documents[$count]['document'] = $dbPath;
                 $count++;
             }
@@ -171,8 +171,8 @@ $academicDetails = json_encode($academicDetails);
 $major1 = json_encode($major1);
 $major2 = json_encode($major2);
 
-if($submit=='1') {
-    if(!$form && !$photo && !$signature) {
+if ($submit == '1') {
+    if (!$form && !$photo && !$signature) {
         header('HTTP/1.0 406 Unacceptable');
     }
 }
