@@ -22,6 +22,7 @@ error_log($submit . ' ::$registrationNo:: ' . $registrationNo);
 error_log(json_encode($_FILES));
 error_log(json_encode($_POST));
 
+$admissionYear = $_POST['admissionYear'];
 $faculty = $_POST['faculty'];
 $courseType = $_POST['courseType'];
 $major1 = json_decode($_POST['major1'], true);
@@ -180,9 +181,9 @@ if ($submit == '1') {
 if ($registrationNo == NULL || $registrationNo == '') {
     $registrationNo = uniqid();
 
-    $sql = "INSERT INTO faculty_course_details (registrationNo,faculty,courseType,
+    $sql = "INSERT INTO faculty_course_details (registrationNo,faculty,courseType,admissionYear,
     major1,major2, major3, major4, vocationalSem1, vocationalSem2, coCurriculumSem1, coCurriculumSem2,  lastUpdated, creationTime) 
-        VALUES ('$registrationNo','$faculty','$courseType','$major1','$major2','$major3','$major4',
+        VALUES ('$registrationNo','$faculty','$courseType','$admissionYear','$major1','$major2','$major3','$major4',
         '$vocationalSem1',$vocationalSem2,'$coCurriculumSem1','$coCurriculumSem2','$creationTime','$creationTime')";
     mysqli_query($con, $sql);
 
@@ -232,7 +233,7 @@ if ($registrationNo == NULL || $registrationNo == '') {
 
     //update code
     $sql = "UPDATE faculty_course_details SET 
-    faculty='$faculty', courseType='$courseType', major1='$major1', major2='$major2' ,
+    faculty='$faculty', courseType='$courseType', admissionYear='$admissionYear', major1='$major1', major2='$major2' ,
     major3='$major3',major4='$major4',vocationalSem1='$vocationalSem1',vocationalSem2='$vocationalSem2',
     coCurriculumSem1='$coCurriculumSem1',coCurriculumSem2='$coCurriculumSem2',lastUpdated='$creationTime'
     WHERE registrationNo='$registrationNo'";

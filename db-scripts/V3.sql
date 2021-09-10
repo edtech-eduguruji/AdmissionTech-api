@@ -102,3 +102,12 @@ ALTER TABLE `users_info` DROP PRIMARY KEY, ADD INDEX `userDetail` (`id`, `user_i
 ALTER TABLE `payment` ADD `RefundStatus` VARCHAR(100) NOT NULL AFTER `checksum`, 
 ADD `TotalRefundAmount` VARCHAR(100) NOT NULL AFTER `RefundStatus`, ADD `LastRefundDate` VARCHAR(100) NOT NULL AFTER `TotalRefundAmount`, 
 ADD `LastRefundRefNo` VARCHAR(100) NOT NULL AFTER `LastRefundDate`, ADD `updatedTime` VARCHAR(100) NOT NULL AFTER `LastRefundRefNo`;
+
+
+ALTER TABLE `faculty_course_details` ADD `admissionYear` 
+VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `courseType`;
+
+ALTER TABLE `faculty_course_details` CHANGE `admissionYear` `admissionYear` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1';
+
+
+ALTER TABLE `basic_details` ADD `courseFee` INT(2) NOT NULL DEFAULT '0' AFTER `creationTime`;
