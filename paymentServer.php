@@ -6,7 +6,7 @@ include_once('utils.php');
 
 error_log("----------------------------------------------------------------");
 $data = $_POST['msg'];
-error_log("msg: " . $data);
+error_log("PS: " . $data);
 
 $myArray = explode('|', $data);
 $countVal = count($myArray);
@@ -18,9 +18,6 @@ $str = implode('|', $myArray);
 
 $gen_checksum = createCheckSum($str);
 $gen_checksum = trim($gen_checksum);
-
-error_log("billdesk_checksum: " . $billdesk_checksum);
-error_log("gen_checksum: " . $gen_checksum);
 
 // MerchantID|UniqueTxnID|TxnReferenceNo|BankReferenceNo|TxnAmount|BankID|BIN|TxnT
 // ype|CurrencyName|ItemCode|SecurityType|SecurityID|SecurityPassword|TxnDate|AuthStat
@@ -70,23 +67,19 @@ $creationTime = getCurrentTime();
 
 if(strcmp($billdesk_checksum, $gen_checksum)==0) {
     
-    $sql_query1 = "INSERT INTO payment (registrationNo, paymentId, TxnReferenceNo, BankReferenceNo, BankID, Bin, TxnAmount, 
-    TxnCode, TxnType, TxnDate, AuthStatusCode, AuthMsg, creationTime, checksum) 
-    VALUES ('$registrationNo', '$UniqueTxnID', '$TxnReferenceNo', '$BankReferenceNo', '$BankID', '$BIN', '$TxnAmount', 
-    '$TxnTypeCode', '$transTypeArray[$TxnTypeCode]', '$TxnDate', '$AuthStatusCode', '$authStatusArray[$AuthStatusCode]', 
-    '$creationTime', '$data')";
+    $sql_query1 = "UPDATE payment set TxnReferenceNo='$TxnReferenceNo', BankReferenceNo='$BankReferenceNo', BankID='$BankID', 
+    Bin='$BIN', TxnAmount='$TxnAmount', TxnCode='$TxnTypeCode', TxnType='$transTypeArray[$TxnTypeCode]', TxnDate='$TxnDate', 
+    AuthStatusCode='$AuthStatusCode', AuthMsg='$authStatusArray[$AuthStatusCode]', creationTime='$creationTime', checksum='$data' 
+    where registrationNo='$registrationNo' and paymentId='$UniqueTxnID' ";
 
     mysqli_query($con, $sql_query1);
     
-    error_log("checksum matched and query executed: ". $sql_query1);
-
     if($AuthStatusCode == "0300") {
         error_log("AuthStatusCode success");
         $sql_query2 = "UPDATE basic_details SET payment='1' WHERE registrationNo='$registrationNo'";
         mysqli_query($con, $sql_query2);
     }
 } else {
-    error_log("checksum not matched");
     $sql_query1 = "INSERT INTO payment (registrationNo, paymentId, TxnReferenceNo, BankReferenceNo, BankID, Bin, TxnAmount, 
     TxnCode, TxnType, TxnDate, AuthStatusCode, AuthMsg, creationTime, checksum) 
     VALUES ('$registrationNo', '$UniqueTxnID', '$TxnReferenceNo', '$BankReferenceNo', '$BankID', '$BIN', '$TxnAmount', 

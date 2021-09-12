@@ -4,7 +4,10 @@ require('AppHeaders.php');
 include_once('DBConnection.php');
 include_once('utils.php');
 
+error_log("----------------------------------------------------------------");
 $data = $_POST['msg'];
+error_log("PI: " . $data);
+
 $myArray = explode('|', $data);
 $countVal = count($myArray);
 
