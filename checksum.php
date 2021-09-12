@@ -7,12 +7,12 @@ include_once('utils.php');
 $db = parse_ini_file(dirname(__DIR__) . "/api/DbProperties.ini");
 
 $userId = $_POST['userId'];
-$responseUrl = ['responseUrl'];
-$account = $_POST=['account'];
-$amount = $_POST=['amount'];
+$responseUrl = $_POST['responseUrl'];
+$account = $_POST['account'];
+$amount = $_POST['amount'];
 
 $txnId = uniqid();
-$str = $db['MERCHANTID'].'|'.$txnId.'|${na}|'.$amount.'|${na}|${na}|${na}|INR|NA|R|'.$db['SECURITYID'].'|${na}|${na}|F|'.$account.'|'.$userId.'|${na}|${na}|${na}|${na}|${na}|'.$responseUrl;
+$str = $db['MERCHANTID'].'|'.$txnId.'|NA|'.$amount.'|NA|NA|NA|INR|NA|R|'.$db['SECURITYID'].'|NA|NA|F|'.$account.'|'.$userId.'|NA|NA|NA|NA|NA|'.$responseUrl;
 $checkSumVal = createCheckSum($str);
 
 //Time entry
