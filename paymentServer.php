@@ -75,7 +75,6 @@ if(strcmp($billdesk_checksum, $gen_checksum)==0) {
     mysqli_query($con, $sql_query1);
     
     if($AuthStatusCode == "0300") {
-        error_log("AuthStatusCode success");
         $sql_query2 = "UPDATE basic_details SET payment='1' WHERE registrationNo='$registrationNo'";
         mysqli_query($con, $sql_query2);
     }

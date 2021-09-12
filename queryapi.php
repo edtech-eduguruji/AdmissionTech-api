@@ -6,19 +6,20 @@
 // }
 // echo json_encode($_SERVER);
 
-
 include_once('utils.php');
-
-$msg = $_POST['msg'];
+$db = parse_ini_file(dirname(__DIR__) . "/api/DbProperties.ini");
 
 date_default_timezone_set('Asia/Kolkata');
 $date = date('YmdHms', time());
 
-// $str = "0122|CNBAGRACOL|565884a-3-0062-b14f-38754747da4|".$date;
-// $checksum = createCheckSum($str);
-// $postfields = [
-//     "msg"=> $str.'|'.$checksum
-//     ];
+$requestType = $_POST['requestType'];
+$transactionId = $_POST['transactionId'];
+$time = $_POST['time'];
+
+$str = $requestType.'|'.$db['MERCHANTID'].'|'.$transactionId.'|'.$time;
+$checkSumVal = createCheckSum($str);
+
+$msg = $str.'|'.$checkSumVal;
 
 $postfields = ["msg"=> $msg];
 $ch = curl_init();
