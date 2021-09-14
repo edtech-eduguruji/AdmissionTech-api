@@ -84,7 +84,7 @@ CHANGE `otherCompetition` `otherCompetition` VARCHAR(100) CHARACTER SET utf8 COL
 CHANGE `ncc` `ncc` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, 
 CHANGE `roverRanger` `roverRanger` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, 
 CHANGE `bcom` `bcom` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, 
-CHANGE `other` `other` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, 
+CHANGE `other` `other` VARCHAR(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, 
 CHANGE `totalMeritCount` `totalMeritCount` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, 
 CHANGE `lastUpdated` `lastUpdated` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL, 
 CHANGE `creationTime` `creationTime` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
@@ -97,3 +97,8 @@ ALTER TABLE `payment` DROP PRIMARY KEY, ADD INDEX `paymentDetail` (`id`, `regist
 
 
 ALTER TABLE `users_info` DROP PRIMARY KEY, ADD INDEX `userDetail` (`id`, `user_id`, `user_name`, `password`) USING BTREE;
+
+
+ALTER TABLE `payment` ADD `RefundStatus` VARCHAR(100) NOT NULL AFTER `checksum`, 
+ADD `TotalRefundAmount` VARCHAR(100) NOT NULL AFTER `RefundStatus`, ADD `LastRefundDate` VARCHAR(100) NOT NULL AFTER `TotalRefundAmount`, 
+ADD `LastRefundRefNo` VARCHAR(100) NOT NULL AFTER `LastRefundDate`, ADD `updatedTime` VARCHAR(100) NOT NULL AFTER `LastRefundRefNo`;
