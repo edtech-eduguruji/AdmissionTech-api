@@ -111,3 +111,5 @@ ALTER TABLE `faculty_course_details` CHANGE `admissionYear` `admissionYear` VARC
 
 
 ALTER TABLE `basic_details` ADD `courseFee` INT(2) NOT NULL DEFAULT '0' AFTER `creationTime`;
+
+ALTER TABLE `payment` ADD `courseFee` VARCHAR(2) NOT NULL DEFAULT '0' AFTER `TxnDate`;
