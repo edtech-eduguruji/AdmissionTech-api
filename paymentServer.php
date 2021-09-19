@@ -70,7 +70,7 @@ if(strcmp($billdesk_checksum, $gen_checksum)==0) {
     
     $sql_query1 = "UPDATE payment set TxnReferenceNo='$TxnReferenceNo', BankReferenceNo='$BankReferenceNo', BankID='$BankID', 
     Bin='$BIN', TxnAmount='$TxnAmount', TxnCode='$TxnTypeCode', TxnType='$transTypeArray[$TxnTypeCode]', TxnDate='$TxnDate', 
-    AuthStatusCode='$AuthStatusCode', AuthMsg='$authStatusArray[$AuthStatusCode]', creationTime='$creationTime', checksum='$data' 
+    AuthStatusCode='$AuthStatusCode', AuthMsg='$authStatusArray[$AuthStatusCode]', creationTime='$creationTime', checksum='$data',  
     courseFee='$courseFee' where registrationNo='$registrationNo' and paymentId='$UniqueTxnID' ";
 
     mysqli_query($con, $sql_query1);
