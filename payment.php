@@ -70,6 +70,9 @@ if($billdesk_checksum==$gen_checksum) {
     if($AuthStatusCode == "0300") {
         $payment = '1';
 
+        $dbConnection = new DBConnection($db);
+        $con = $dbConnection->getConnection();
+        
         $query = "SELECT basic_details.submitted, basic_details.payment, basic_details.courseFee, faculty_course_details.admissionYear 
         FROM basic_details 
         INNER JOIN faculty_course_details ON faculty_course_details.registrationNo = basic_details.registrationNo 
@@ -86,6 +89,8 @@ if($billdesk_checksum==$gen_checksum) {
         } else {
             header(' 500 Internal Server Error', true, 500);
         }
+
+        $dbConnection->closeConnection();
     }
 }
 
