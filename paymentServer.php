@@ -55,6 +55,7 @@ $transTypeArray = array('01'=>'Netbanking',
     $AuthStatusCode = $myArray[14];
     $PaymentFacultyId = $myArray[16];
     $registrationNo = $myArray[17];
+    $courseFee = $myArray[18];
     $errorCode = $myArray[22];
     $errorDescription = $myArray[23];
 
@@ -75,7 +76,7 @@ if(strcmp($billdesk_checksum, $gen_checksum)==0) {
     mysqli_query($con, $sql_query1);
     
     if($AuthStatusCode == "0300") {
-        $sql_query2 = "UPDATE basic_details SET payment='1' WHERE registrationNo='$registrationNo'";
+        $sql_query2 = "UPDATE basic_details SET payment='1', courseFee='$courseFee' WHERE registrationNo='$registrationNo'";
         mysqli_query($con, $sql_query2);
     }
 } else {
