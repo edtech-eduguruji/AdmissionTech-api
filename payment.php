@@ -55,6 +55,7 @@ $transTypeArray = array('01'=>'Netbanking',
     $AuthStatusCode = $myArray[14];
     $PaymentFacultyId = $myArray[16];
     $registrationNo = $myArray[17];
+    $courseFee = $myArray[18];
     $errorCode = $myArray[22];
     $errorDescription = $myArray[23];
 
@@ -62,10 +63,34 @@ $transTypeArray = array('01'=>'Netbanking',
 date_default_timezone_set('Asia/Kolkata');
 $creationTime = getCurrentTime();
 $payment = '0';
+$admissionYear = null;
+$submitted = '0';
 
 if($billdesk_checksum==$gen_checksum) {
     if($AuthStatusCode == "0300") {
         $payment = '1';
+
+        $dbConnection = new DBConnection($db);
+        $con = $dbConnection->getConnection();
+        
+        $query = "SELECT basic_details.submitted, basic_details.payment, basic_details.courseFee, faculty_course_details.admissionYear 
+        FROM basic_details 
+        INNER JOIN faculty_course_details ON faculty_course_details.registrationNo = basic_details.registrationNo 
+        WHERE basic_details.registrationNo = '$registrationNo' ";
+
+        $result = $con->query($query);
+        $count = mysqli_num_rows($result);
+
+        if ($count > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $admissionYear = $row['admissionYear'];
+                $submitted = $row['submitted'];
+            }
+        } else {
+            header(' 500 Internal Server Error', true, 500);
+        }
+
+        $dbConnection->closeConnection();
     }
 }
 
@@ -86,11 +111,14 @@ $user = array(
 
     'registrationNo' => $registrationNo,
     'payment' => $payment,
-    'submitted' => '0',
+    'submitted' => $submitted,
     'role' => 'STUDENT',
     'active' => '1',
     'user_name' => $registrationNo,
-    'user_id' => $registrationNo
+    'user_id' => $registrationNo,
+
+    'courseFee' => $courseFee,
+    'admissionYear'=> $admissionYear
 );
 
 $jwt = createToken($user);

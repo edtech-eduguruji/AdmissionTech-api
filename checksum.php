@@ -10,9 +10,10 @@ $userId = $_POST['userId'];
 $responseUrl = $_POST['responseUrl'];
 $account = $_POST['account'];
 $amount = $_POST['amount'];
+$courseFee = $_POST['courseFee'];
 
 $txnId = uniqid();
-$str = $db['MERCHANTID'].'|'.$txnId.'|NA|'.$amount.'|NA|NA|NA|INR|NA|R|'.$db['SECURITYID'].'|NA|NA|F|'.$account.'|'.$userId.'|NA|NA|NA|NA|NA|'.$responseUrl;
+$str = $db['MERCHANTID'].'|'.$txnId.'|NA|'.$amount.'|NA|NA|NA|INR|NA|R|'.$db['SECURITYID'].'|NA|NA|F|'.$account.'|'.$userId.'|'.$courseFee.'|NA|NA|NA|NA|'.$responseUrl;
 $checkSumVal = createCheckSum($str);
 
 //Time entry

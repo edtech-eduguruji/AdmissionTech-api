@@ -6,10 +6,16 @@ include_once('utils.php');
 $dbConnection = new DBConnection($db);
 $con = $dbConnection->getConnection();
 
+$creationTime = $_GET['creationTime'];
+
 $query = "SELECT basic_details.registrationNo,basic_details.payment, payment.paymentId FROM basic_details 
 INNER JOIN payment ON payment.registrationNo = basic_details.registrationNo";
 
-$sql = "$query WHERE payment.AuthStatusCode = '0399' or payment.AuthStatusCode ='' ";
+$sql = "$query WHERE (payment.AuthStatusCode = '0399' or payment.AuthStatusCode ='' or payment.AuthStatusCode ='NA')  ";
+
+if($creationTime) {
+    $sql = $sql." and payment.creationTime ='$creationTime' ";
+}
 
 $result = $con->query($sql);
 $count = mysqli_num_rows($result);
