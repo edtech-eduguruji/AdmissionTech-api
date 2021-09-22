@@ -50,7 +50,7 @@ if ($count == 0) {
     ) {
         $data = array(
             'user_id' => $registrationNo, 'user_name' => $name,
-            'password' => $dob, 'fullname' => $name, 'submitted' => "0", 'payment' => "0", 'role' => "STUDENT"
+            'password' => $dob, 'fullname' => $name, 'submitted' => "0", 'payment' => "0", 'courseFee'=> "0", 'role' => "STUDENT"
         );
 
         $jwt = createToken($data);

@@ -275,8 +275,8 @@ if ($registrationNo == NULL || $registrationNo == '') {
 }
 
 $data = array(
-    'registrationNo' => $registrationNo, 'active' => "1", 'submitted' => $submit, 'payment' => '1',
-    'role' => "STUDENT", 'user_id' => $registrationNo, 'user_name' => $registrationNo
+    'registrationNo' => $registrationNo, 'active' => "1", 'submitted' => $submit, 'payment' => '1', 'courseFee'=>'0', 
+    'admissionYear'=> $admissionYear, 'role' => "STUDENT", 'user_id' => $registrationNo, 'user_name' => $registrationNo
 );
 
 $dbConnection->closeConnection();

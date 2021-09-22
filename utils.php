@@ -40,6 +40,30 @@ function createCheckSum($str)
     return $checksum;
 }
 
+function getQueryApi($requestType, $transactionId, $time) {
+    $db = parse_ini_file(dirname(__DIR__) . "/api/DbProperties.ini");
+    
+    $str = $requestType.'|'.$db['MERCHANTID'].'|'.$transactionId.'|'.$time;
+    $checkSumVal = createCheckSum($str);
+    
+    $msg = $str.'|'.$checkSumVal;
+    
+    $postfields = ["msg"=> $msg];
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,"https://www.billdesk.com/pgidsk/PGIQueryController");
+    
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+    
+    // Receive server response ...
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    
+    $server_output = curl_exec($ch);
+    curl_close ($ch);
+    
+    return $server_output;
+}
+
 function createToken($userInfo)
 {
     $secret_key = "Kushal-Maharaj-Ki-Jai";
