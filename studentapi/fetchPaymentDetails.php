@@ -18,13 +18,22 @@ switch ($requestMethod) {
         users_info.password,users_info.role,users_info.active FROM users_info 
         INNER JOIN basic_details ON users_info.user_id = basic_details.registrationNo 
         INNER JOIN payment ON payment.registrationNo = basic_details.registrationNo 
-        WHERE payment.registrationNo='$registrationNo' and AuthStatusCode='0300' and basic_details.payment='1' ";
+        WHERE payment.registrationNo='$registrationNo' and basic_details.payment='1' and
+        (payment.courseFee='0' and AuthStatusCode='0300') or (basic_details.courseFee='1' and payment.courseFee='1' and AuthStatusCode='0300') ";
 
         $result = mysqli_query($con, $sql_query);
 
         if (mysqli_num_rows($result) > 0) {
-            $response = (mysqli_fetch_assoc($result));
-            echo createToken($response);
+            $json = array();
+            while($row = mysqli_fetch_assoc($result)){
+                $json[] = $row;
+            }
+            $response = array("payment"=>createToken($json[0]));
+            if(count($json)>1) {
+                $response['courseFee'] = createToken($json[1]);
+            }
+            
+            echo json_encode($response);
         }
         $dbConnection->closeConnection();
         break;
