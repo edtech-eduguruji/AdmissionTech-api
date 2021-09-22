@@ -1,3 +1,5 @@
+ALTER TABLE `faculty_course_details` ADD `admissionYear` 
+VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `courseType`;
 
 ALTER TABLE `basic_details` CHANGE `registrationNo` `registrationNo` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 ALTER TABLE `basic_details` CHANGE `vaccinated` `vaccinated` VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
