@@ -1,4 +1,3 @@
-
 ALTER TABLE `basic_details` CHANGE `registrationNo` `registrationNo` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 ALTER TABLE `basic_details` CHANGE `vaccinated` `vaccinated` VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 ALTER TABLE `basic_details` CHANGE `nameTitle` `nameTitle` VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
