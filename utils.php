@@ -40,27 +40,28 @@ function createCheckSum($str)
     return $checksum;
 }
 
-function getQueryApi($requestType, $transactionId, $time) {
+function getQueryApi($requestType, $transactionId, $time)
+{
     $db = parse_ini_file(dirname(__DIR__) . "/api/DbProperties.ini");
-    
-    $str = $requestType.'|'.$db['MERCHANTID'].'|'.$transactionId.'|'.$time;
+
+    $str = $requestType . '|' . $db['MERCHANTID'] . '|' . $transactionId . '|' . $time;
     $checkSumVal = createCheckSum($str);
-    
-    $msg = $str.'|'.$checkSumVal;
-    
-    $postfields = ["msg"=> $msg];
+
+    $msg = $str . '|' . $checkSumVal;
+
+    $postfields = ["msg" => $msg];
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL,"https://www.billdesk.com/pgidsk/PGIQueryController");
-    
+    curl_setopt($ch, CURLOPT_URL, "https://www.billdesk.com/pgidsk/PGIQueryController");
+
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
-    
+
     // Receive server response ...
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    
+
     $server_output = curl_exec($ch);
-    curl_close ($ch);
-    
+    curl_close($ch);
+
     return $server_output;
 }
 
@@ -103,5 +104,87 @@ function verifyToken($jwt)
         return false;
     } else {
         return true;
+    }
+}
+
+function filtersQuery($courseType, $year, $category, $regNo, $fromDate, $toDate, $status, $faculty, $major1)
+{
+    $condition = "";
+    $count = 0;
+    if (!empty($regNo)) {
+        $condition = "basic_details.registrationNo='$regNo'";
+        $count++;
+    }
+    if (!empty($courseType)) {
+        if ($count > 0) {
+            $condition = $condition . " AND ";
+        }
+        $condition = $condition . "faculty_course_details.courseType = '$courseType' ";
+        $count++;
+    }
+    if (!empty($year)) {
+        if ($count > 0) {
+            $condition = $condition . " AND ";
+        }
+        $condition = $condition . "faculty_course_details.admissionYear = '$year' ";
+        $count++;
+    }
+    if (!empty($category)) {
+        if ($count > 0 && $category != 'all') {
+            $condition = $condition . " AND ";
+        }
+        if ($category != 'all') {
+            $condition = $condition . "basic_details.category = '$category' ";
+        }
+        $count++;
+    }
+    if (!empty($fromDate)) {
+        if ($count > 0) {
+            $condition = $condition . " AND ";
+        }
+        $condition = $condition . "basic_details.creationTime >= '$fromDate' ";
+        $count++;
+    }
+    if (!empty($toDate)) {
+        if ($count > 0) {
+            $condition = $condition . " AND ";
+        }
+        $condition = $condition . "basic_details.creationTime <= '$toDate' ";
+        $count++;
+    }
+    if (!empty($status)) {
+        if ($count > 0) {
+            $condition = $condition . " AND ";
+        }
+        if ($status == 'submittedForms') {
+            $statusCondition = "basic_details.payment='1' AND basic_details.submitted='1'";
+        } else if ($status == 'prospectusPayment') {
+            $statusCondition = "basic_details.payment='1' AND basic_details.submitted='0'";
+        } else if ($status == 'submittedFormsWithCourseFee') {
+            $statusCondition = "basic_details.payment='1' AND basic_details.submitted='1' AND basic_details.courseFee='1'";
+        } else if ($status == 'submittedFormsWithoutCourseFee') {
+            $statusCondition = "basic_details.payment='1' AND basic_details.submitted='1' AND basic_details.courseFee='0'";
+        }
+        $condition = $condition . $statusCondition;
+        $count++;
+    }
+    if (!empty($faculty)) {
+        if ($count > 0) {
+            $condition = $condition . " AND ";
+        }
+        $condition = $condition . "faculty_course_details.faculty='$faculty'";
+        $count++;
+    }
+    if (!empty($major1)) {
+        if ($count > 0) {
+            $condition = $condition . " AND ";
+        }
+        $condition = $condition . "faculty_course_details.major1 LIKE '%$major1%'";
+        $count++;
+    }
+    if ($count == 0) {
+        return "basic_details.payment = '1' AND basic_details.submitted = '1'";
+    } else {
+        return $condition;
     }
 }
