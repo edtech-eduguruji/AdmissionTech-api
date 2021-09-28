@@ -76,7 +76,7 @@ if ($isTokenValid) {
     INNER JOIN merit_details ON basic_details.registrationNo = merit_details.registrationNo 
     $WHERE";
 
-    error_log($sql_query);
+    // error_log($sql_query);
 
     $result = mysqli_query($con, $sql_query);
 
