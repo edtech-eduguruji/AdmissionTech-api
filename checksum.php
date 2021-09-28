@@ -25,7 +25,7 @@ $dbConnection = new DBConnection($db);
 $con = $dbConnection->getConnection();
 
 //insert into db to log all payment entry
-$sql = "INSERT INTO payment (registrationNo, paymentId, creationTime) VALUES ('$userId', '$txnId', '$creationTime')";
+$sql = "INSERT INTO payment (registrationNo, paymentId, TxnAmount, courseFee, creationTime) VALUES ('$userId', '$txnId', '$amount', '$courseFee', '$creationTime')";
 $con->query($sql);
 
 echo $str.'|'.$checkSumVal;
