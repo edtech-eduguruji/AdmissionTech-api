@@ -188,3 +188,117 @@ function filtersQuery($courseType, $year, $category, $regNo, $fromDate, $toDate,
         return $condition;
     }
 }
+
+function fetchPayment($registrationNo, $receipt, $con) {
+
+    $sql_query = "SELECT payment.*, basic_details.submitted,basic_details.payment,users_info.user_id,users_info.user_name,
+    users_info.password,users_info.role,users_info.active FROM users_info 
+    INNER JOIN basic_details ON users_info.user_id = basic_details.registrationNo 
+    INNER JOIN payment ON payment.registrationNo = basic_details.registrationNo ";
+
+    if($receipt == '1') {
+        $sql_query = $sql_query." WHERE (payment.registrationNo='$registrationNo' and basic_details.payment='1') and 
+        ((payment.courseFee='0' and AuthStatusCode='0300') or (basic_details.courseFee='1' and payment.courseFee='1' and AuthStatusCode='0300')) ";    
+        
+        $result = mysqli_query($con, $sql_query);
+
+        if (mysqli_num_rows($result) > 0) {
+            $json = array();
+            while($row = mysqli_fetch_assoc($result)){
+                $json[] = $row;
+            }
+            $response = array("payment"=>createToken($json[0]));
+            if(count($json)>1) {
+                $response['courseFee'] = createToken($json[1]);
+            }
+            
+            return ($response);
+        }
+    
+    } else {
+        $sql_query = $sql_query." WHERE payment.registrationNo='$registrationNo' ";    
+        
+        $result = mysqli_query($con, $sql_query);
+
+        if (mysqli_num_rows($result) > 0) {
+            $json = array();
+            while($row = mysqli_fetch_assoc($result)){
+                $json[] = $row;
+            }
+            return ($json);
+        }
+    
+    }
+}
+
+function updatePayment($str, $registrationNo, $paymentId, $con) {
+
+
+    $transTypeArray = array('01'=>'Netbanking',
+    '02'=>'Credit Card',   
+    '03'=>'Debit Card',
+    '04'=>'Cash Card',
+    '05'=>'Mobile Wallet',
+    '06'=>'IMPS',
+    '07'=>'Reward Points',
+    '08'=>'Rupay',
+    '09'=>'Others',
+    '10'=>'UPI');   
+
+
+    $authStatusArray = array( 
+    '0300'=>'Success',
+    '0399'=>'Failure',
+    'NA'=>'Failure',
+    '0002'=>'Pending',
+    '0001'=>'Failure');
+
+    date_default_timezone_set('Asia/Kolkata');
+    $creationTime = getCurrentTime();
+
+    $val = explode('|', $str);
+            
+    $registrationNo = $registrationNo;
+    $UniqueTxnID = $paymentId;
+    $TxnReferenceNo = $val[3];
+    $BankReferenceNo = $val[4];
+    $TxnAmount = $val[5];
+    $BankID = $val[6];
+    $BankMerchantID = $val[7];
+    $TxnTypeCode = $val[8];
+    $TxnDate = $val[14];
+    $AuthStatusCode = $val[15];
+    $ErrorStatus = $val[24];
+    $ErrorDescription = $val[25];
+    $RefundStatus = $val[27];
+    $TotalRefundAmount = $val[28];
+    $LastRefundDate = $val[29];
+    $LastRefundRefNo = $val[30];
+
+
+    // $LastRefundRefNo = $val[17];
+    // $LastRefundRefNo = $val[18];
+    $courseFee = $val[19];
+    
+    echo json_encode($val).'     ';
+    if(trim($courseFee)=='NA') {
+        $courseFee = '0';
+    }
+    
+    $sql_query1 = "UPDATE payment set TxnReferenceNo='$TxnReferenceNo', BankReferenceNo='$BankReferenceNo', BankID='$BankID', 
+    TxnAmount='$TxnAmount', TxnCode='$TxnTypeCode', TxnType='$transTypeArray[$TxnTypeCode]', TxnDate='$TxnDate', 
+    AuthStatusCode='$AuthStatusCode', AuthMsg='$authStatusArray[$AuthStatusCode]', updatedTime='$creationTime',
+    RefundStatus='$RefundStatus', TotalRefundAmount='$TotalRefundAmount', LastRefundDate='$LastRefundDate', LastRefundRefNo='$LastRefundRefNo', 
+    courseFee='$courseFee' where registrationNo='$registrationNo' and paymentId='$UniqueTxnID' ";
+
+    mysqli_query($con, $sql_query1);
+    
+    if($AuthStatusCode=='0300' && $RefundStatus=='NA') {
+        
+        $sql_query2 = "UPDATE basic_details SET payment='1', courseFee='$courseFee' WHERE registrationNo='$registrationNo'";
+        mysqli_query($con, $sql_query2);
+        
+        return "status update to sucess for - ".$UniqueTxnID." and reg: ".$registrationNo;
+        
+    }
+}

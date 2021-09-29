@@ -15,44 +15,7 @@ switch ($requestMethod) {
         $registrationNo = $_GET['registrationNo'];
         $receipt = $_GET['receipt'];
 
-        $sql_query = "SELECT payment.*, basic_details.submitted,basic_details.payment,users_info.user_id,users_info.user_name,
-        users_info.password,users_info.role,users_info.active FROM users_info 
-        INNER JOIN basic_details ON users_info.user_id = basic_details.registrationNo 
-        INNER JOIN payment ON payment.registrationNo = basic_details.registrationNo ";
-
-        if($receipt == '1') {
-            $sql_query = $sql_query." WHERE (payment.registrationNo='$registrationNo' and basic_details.payment='1') and 
-            ((payment.courseFee='0' and AuthStatusCode='0300') or (basic_details.courseFee='1' and payment.courseFee='1' and AuthStatusCode='0300')) ";    
-            
-            $result = mysqli_query($con, $sql_query);
-
-            if (mysqli_num_rows($result) > 0) {
-                $json = array();
-                while($row = mysqli_fetch_assoc($result)){
-                    $json[] = $row;
-                }
-                $response = array("payment"=>createToken($json[0]));
-                if(count($json)>1) {
-                    $response['courseFee'] = createToken($json[1]);
-                }
-                
-                echo json_encode($response);
-            }
-        
-        } else {
-            $sql_query = $sql_query." WHERE payment.registrationNo='$registrationNo' ";    
-            
-            $result = mysqli_query($con, $sql_query);
-
-            if (mysqli_num_rows($result) > 0) {
-                $json = array();
-                while($row = mysqli_fetch_assoc($result)){
-                    $json[] = $row;
-                }
-                echo json_encode($json);
-            }
-        
-        }
+        echo json_encode(fetchPayment($registrationNo, $receipt, $con));
         
         $dbConnection->closeConnection();
         break;
