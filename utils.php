@@ -130,12 +130,10 @@ function filtersQuery($courseType, $year, $category, $regNo, $fromDate, $toDate,
         $count++;
     }
     if (!empty($category)) {
-        if ($count > 0 && $category != 'all') {
+        if ($count > 0) {
             $condition = $condition . " AND ";
         }
-        if ($category != 'all') {
-            $condition = $condition . "basic_details.category = '$category' ";
-        }
+        $condition = $condition . "basic_details.category = '$category' ";
         $count++;
     }
     if (!empty($fromDate)) {
@@ -161,7 +159,7 @@ function filtersQuery($courseType, $year, $category, $regNo, $fromDate, $toDate,
         } else if ($status == 'prospectusPayment') {
             $statusCondition = "basic_details.payment='1' AND basic_details.submitted='0'";
         } else if ($status == 'submittedFormsWithCourseFee') {
-            $statusCondition = "basic_details.payment='1' AND basic_details.submitted='1' AND basic_details.courseFee='1'";
+            $statusCondition = "basic_details.payment='1' AND basic_details.submitted='1' AND basic_details.courseFee='1' AND payment.courseFee='1' AND payment.AuthStatusCode='0300'";
         } else if ($status == 'submittedFormsWithoutCourseFee') {
             $statusCondition = "basic_details.payment='1' AND basic_details.submitted='1' AND basic_details.courseFee='0'";
         }
@@ -172,7 +170,7 @@ function filtersQuery($courseType, $year, $category, $regNo, $fromDate, $toDate,
         if ($count > 0) {
             $condition = $condition . " AND ";
         }
-        $condition = $condition . "faculty_course_details.faculty='$faculty'";
+        $condition = $condition . "faculty_course_details.faculty = '$faculty'";
         $count++;
     }
     if (!empty($major1)) {
@@ -182,11 +180,7 @@ function filtersQuery($courseType, $year, $category, $regNo, $fromDate, $toDate,
         $condition = $condition . "faculty_course_details.major1 LIKE '%$major1%'";
         $count++;
     }
-    if ($count == 0) {
-        return "basic_details.payment = '1' AND basic_details.submitted = '1'";
-    } else {
-        return $condition;
-    }
+    return $condition;
 }
 
 function fetchPayment($registrationNo, $receipt, $con) {
@@ -204,8 +198,12 @@ function fetchPayment($registrationNo, $receipt, $con) {
 
         if (mysqli_num_rows($result) > 0) {
             $json = array();
-            while($row = mysqli_fetch_assoc($result)){
-                $json[] = $row;
+            while($row = mysqli_fetch_assoc($result)) {
+                if(count($json) <= 0) {
+                    $json[] = $row;
+                } else if($row['courseFee'] && $row['courseFee']=='1') {
+                    $json[] = $row;
+                }
             }
             $response = array("payment"=>createToken($json[0]));
             if(count($json)>1) {
