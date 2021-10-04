@@ -204,8 +204,12 @@ function fetchPayment($registrationNo, $receipt, $con) {
 
         if (mysqli_num_rows($result) > 0) {
             $json = array();
-            while($row = mysqli_fetch_assoc($result)){
-                $json[] = $row;
+            while($row = mysqli_fetch_assoc($result)) {
+                if(count($json) <= 0) {
+                    $json[] = $row;
+                } else if($row['courseFee'] && $row['courseFee']=='1') {
+                    $json[] = $row;
+                }
             }
             $response = array("payment"=>createToken($json[0]));
             if(count($json)>1) {

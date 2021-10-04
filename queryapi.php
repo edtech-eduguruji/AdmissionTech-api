@@ -37,7 +37,20 @@ switch ($requestMethod) {
         $requestType = $_POST['requestType'];
         $transactionId = $_POST['transactionId'];
         $time = $_POST['time'];
+        $updateForm = $_POST['updateForm'];
+        $registrationNo = $_POST['registrationNo'];
 
-        echo getQueryApi($requestType, $transactionId, $time);
+        if($updateForm == '0') {
+            echo getQueryApi($requestType, $transactionId, $time);
+        } else if($updateForm == '1'){
+            echo json_encode($_POST);
+            $academicDetails = json_decode($_POST['academicDetails'], true);
+            $academicDetails = json_encode($academicDetails);
+
+            $sql3 = "UPDATE academic_details SET academicDetails='$academicDetails' WHERE registrationNo='$registrationNo'";
+            $con->query($sql3);
+            $dbConnection->closeConnection();
+        }
+
         break;
 }
