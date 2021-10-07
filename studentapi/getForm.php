@@ -7,8 +7,9 @@ $dbConnection = new DBConnection($db);
 $con = $dbConnection->getConnection();
 $jwt = $dbConnection->getUserData("Authentication");
 
-
 $response = null;
+$paymentColumns = "";
+$paymentJoin = "";
 
 if (isset($_GET['registrationNo'])) {
     $registrationNo = $_GET['registrationNo'];
@@ -31,8 +32,6 @@ if (isset($_GET['registrationNo'])) {
     $status = null;
     $faculty = null;
     $major1 = null;
-    $paymentColumns = "";
-    $paymentJoin = "";
     if (isset($_GET['courseType'])) {
         $courseType = $_GET['courseType'];
     }
