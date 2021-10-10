@@ -74,8 +74,7 @@ if($billdesk_checksum==$gen_checksum) {
         $con = $dbConnection->getConnection();
         
         $query = "SELECT basic_details.submitted, basic_details.payment, basic_details.courseFee, faculty_course_details.admissionYear 
-        FROM basic_details 
-        INNER JOIN faculty_course_details ON faculty_course_details.registrationNo = basic_details.registrationNo 
+        FROM basic_details INNER JOIN faculty_course_details ON faculty_course_details.registrationNo = basic_details.registrationNo 
         WHERE basic_details.registrationNo = '$registrationNo' ";
 
         $result = $con->query($query);

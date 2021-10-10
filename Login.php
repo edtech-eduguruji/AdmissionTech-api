@@ -12,7 +12,7 @@ $password = $_GET['password'];
 if (isset($_GET['isAdmin'])) {
     $query = "SELECT * FROM users_info";
 } else {
-    $query = "SELECT basic_details.submitted,basic_details.payment,users_info.user_id,users_info.user_name,
+    $query = "SELECT basic_details.selection, basic_details.submitted,basic_details.payment,users_info.user_id,users_info.user_name,
     basic_details.courseFee, faculty_course_details.admissionYear, users_info.password,users_info.role,users_info.active FROM users_info 
     INNER JOIN basic_details ON users_info.user_id = basic_details.registrationNo 
     INNER JOIN faculty_course_details ON faculty_course_details.registrationNo = basic_details.registrationNo ";

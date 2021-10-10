@@ -200,8 +200,8 @@ function filtersQuery($courseType, $year, $selection, $category, $regNo, $fromDa
 function fetchPayment($registrationNo, $receipt, $con)
 {
 
-    $sql_query = "SELECT payment.*, basic_details.submitted,basic_details.payment,users_info.user_id,users_info.user_name,
-    users_info.password,users_info.role,users_info.active FROM users_info 
+    $sql_query = "SELECT payment.*, basic_details.selection, basic_details.submitted,basic_details.payment,users_info.user_id,
+    users_info.user_name, users_info.password,users_info.role,users_info.active FROM users_info 
     INNER JOIN basic_details ON users_info.user_id = basic_details.registrationNo 
     INNER JOIN payment ON payment.registrationNo = basic_details.registrationNo ";
 
