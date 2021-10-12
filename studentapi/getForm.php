@@ -7,8 +7,9 @@ $dbConnection = new DBConnection($db);
 $con = $dbConnection->getConnection();
 $jwt = $dbConnection->getUserData("Authentication");
 
-
 $response = null;
+$paymentColumns = "";
+$paymentJoin = "";
 
 if (isset($_GET['registrationNo'])) {
     $registrationNo = $_GET['registrationNo'];
@@ -24,6 +25,7 @@ if (isset($_GET['registrationNo'])) {
     }
     $courseType = null;
     $year = null;
+    $selection = null;
     $category = null;
     $regNo = null;
     $fromDate = null;
@@ -31,13 +33,14 @@ if (isset($_GET['registrationNo'])) {
     $status = null;
     $faculty = null;
     $major1 = null;
-    $paymentColumns = "";
-    $paymentJoin = "";
     if (isset($_GET['courseType'])) {
         $courseType = $_GET['courseType'];
     }
     if (isset($_GET['admissionYear'])) {
         $year = $_GET['admissionYear'];
+    }
+    if (isset($_GET['selection'])) {
+        $selection = $_GET['selection'];
     }
     if (isset($_GET['category'])) {
         $category = $_GET['category'];
@@ -53,10 +56,6 @@ if (isset($_GET['registrationNo'])) {
     }
     if (isset($_GET['status'])) {
         $status = $_GET['status'];
-        if ($status ==  'submittedFormsWithCourseFee') {
-            $paymentColumns = ",payment.AuthStatusCode, payment.paymentId, payment.TxnAmount";
-            $paymentJoin = "INNER JOIN payment ON basic_details.registrationNo = payment.registrationNo ";
-        }
     }
     if (isset($_GET['faculty'])) {
         $faculty = $_GET['faculty'];
@@ -64,7 +63,11 @@ if (isset($_GET['registrationNo'])) {
     if (isset($_GET['major1'])) {
         $major1 = $_GET['major1'];
     }
-    $WHERE =  "WHERE " . filtersQuery($courseType, $year, $category, $regNo, $fromDate, $toDate, $status, $faculty, $major1) . " $pagination";
+    if ($status ==  'submittedFormsWithCourseFee' || $selection == 'selectedWithPayment') {
+        $paymentColumns = ",payment.AuthStatusCode, payment.paymentId, payment.TxnAmount";
+        $paymentJoin = "INNER JOIN payment ON basic_details.registrationNo = payment.registrationNo ";
+    }
+    $WHERE =  "WHERE " . filtersQuery($courseType, $year, $selection, $category, $regNo, $fromDate, $toDate, $status, $faculty, $major1) . " $pagination";
     $response = array();
 }
 
@@ -77,7 +80,7 @@ if ($isTokenValid) {
     basic_details.category, basic_details.subCategory, basic_details.categoryCertificate, basic_details.subCategoryCertificate, 
     basic_details.personalMobile, basic_details.parentMobile, basic_details.aadharNo, basic_details.email, basic_details.mediumOfInstitution, 
     basic_details.photo, basic_details.wrn, basic_details.form, basic_details.signature, basic_details.submitted, basic_details.payment, 
-    basic_details.courseFee, academic_details.registrationNo, academic_details.academicDetails, advanced_details.registrationNo, 
+    basic_details.courseFee,basic_details.selection, academic_details.registrationNo, academic_details.academicDetails, advanced_details.registrationNo, 
     advanced_details.fatherName, advanced_details.motherName, advanced_details.parentsOccupation, advanced_details.guardianName, 
     advanced_details.relationOfApplicant, advanced_details.houseNo, advanced_details.street, advanced_details.pincode, 
     advanced_details.postOffice, advanced_details.state, advanced_details.city, advanced_details.cHouseNo, 
