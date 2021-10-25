@@ -255,13 +255,7 @@ if ($registrationNo == NULL || $registrationNo == '') {
     cPincode='$cPincode', cPostOffice='$cPostOffice', cState='$cState', cCity='$cCity', lastUpdated='$creationTime'
     WHERE registrationNo='$registrationNo'";
     $con->query($sql2);
-
-    $sql3 = "UPDATE academic_details SET academicDetails='$academicDetails',lastUpdated='$creationTime' WHERE registrationNo='$registrationNo'";
-    $con->query($sql3);
-
-    $sql4 = "UPDATE documents SET documents='$documents',lastUpdated='$creationTime' WHERE registrationNo='$registrationNo'";
-    $con->query($sql4);
-
+   
     $sql5 = "UPDATE merit_details SET
     nationalCompetition='$nationalCompetition', nationalCertificate='$nationalCertificate', 
     otherCompetition='$otherCompetition', otherCertificate='$otherCertificate', ncc='$ncc', 
@@ -272,6 +266,12 @@ if ($registrationNo == NULL || $registrationNo == '') {
 
     $sql6 = "UPDATE users_info SET password='$dob' WHERE user_id='$registrationNo'";
     $con->query($sql6);
+    
+    $sql3 = "UPDATE academic_details SET academicDetails='$academicDetails',lastUpdated='$creationTime' WHERE registrationNo='$registrationNo'";
+    $con->query($sql3);
+    
+    $sql4 = "UPDATE documents SET documents='$documents',lastUpdated='$creationTime' WHERE registrationNo='$registrationNo'";
+    $con->query($sql4);
 }
 
 $data = array(
