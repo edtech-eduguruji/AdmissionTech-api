@@ -173,13 +173,9 @@ switch ($requestMethod) {
                 cHouseNo='$cHouseNo', cStreet='$cStreet', cPincode='$cPincode', cPostOffice='$cPostOffice', cState='$cState', 
                 cCity='$cCity', lastUpdated='$creationTime' WHERE registrationNo='$registrationNo'";
                 $con->query($sql2);
-            } else if ($actionType == '5') { // Academic Details
+            } else if ($actionType == '5') { // Academic & Faculty Details
                 $academicDetails = json_decode($_POST['academicDetails'], true);
                 $academicDetails = json_encode($academicDetails);
-                $sql = "UPDATE academic_details SET academicDetails='$academicDetails', lastUpdated='$creationTime' 
-                WHERE registrationNo='$registrationNo'";
-                $con->query($sql);
-            } else if ($actionType == '6') { // Faculty Details
                 $faculty = $_POST['faculty'];
                 $major1 = json_decode($_POST['major1'], true);
                 $major2 = json_decode($_POST['major2'], true);
@@ -191,19 +187,48 @@ switch ($requestMethod) {
                 $vocationalSem2 = $_POST['vocationalSem2'];
                 $coCurriculumSem1 = $_POST['coCurriculumSem1'];
                 $coCurriculumSem2 = $_POST['coCurriculumSem2'];
-                $sql = "UPDATE faculty_course_details SET 
-                faculty='$faculty', courseType='$courseType', admissionYear='$admissionYear', major1='$major1', major2='$major2' ,
-                major3='$major3',major4='$major4',vocationalSem1='$vocationalSem1',vocationalSem2='$vocationalSem2',
-                coCurriculumSem1='$coCurriculumSem1',coCurriculumSem2='$coCurriculumSem2',lastUpdated='$creationTime'
-                WHERE registrationNo='$registrationNo'";
-                $con->query($sql);
-            } else if ($actionType == '7') { // Upload Documents
+                $sql1 = "UPDATE academic_details SET academicDetails='$academicDetails', lastUpdated='$creationTime' 
+                    WHERE registrationNo='$registrationNo'";
+                $sql2 = "UPDATE faculty_course_details SET 
+                     faculty='$faculty', courseType='$courseType', admissionYear='$admissionYear', major1='$major1', major2='$major2' ,
+                     major3='$major3',major4='$major4',vocationalSem1='$vocationalSem1',vocationalSem2='$vocationalSem2',
+                     coCurriculumSem1='$coCurriculumSem1',coCurriculumSem2='$coCurriculumSem2',lastUpdated='$creationTime'
+                     WHERE registrationNo='$registrationNo'";
+                $con->query($sql1);
+                $con->query($sql2);
+            }
+            // else if ($actionType == '5') { // Academic Details
+            //     $academicDetails = json_decode($_POST['academicDetails'], true);
+            //     $academicDetails = json_encode($academicDetails);
+            //     $sql = "UPDATE academic_details SET academicDetails='$academicDetails', lastUpdated='$creationTime' 
+            //     WHERE registrationNo='$registrationNo'";
+            //     $con->query($sql);
+            // } else if ($actionType == '6') { // Faculty Details
+            //     $faculty = $_POST['faculty'];
+            //     $major1 = json_decode($_POST['major1'], true);
+            //     $major2 = json_decode($_POST['major2'], true);
+            //     $major1 = json_encode($major1);
+            //     $major2 = json_encode($major2);
+            //     $major3 = $_POST['major3'];
+            //     $major4 = $_POST['major4'];
+            //     $vocationalSem1 = $_POST['vocationalSem1'];
+            //     $vocationalSem2 = $_POST['vocationalSem2'];
+            //     $coCurriculumSem1 = $_POST['coCurriculumSem1'];
+            //     $coCurriculumSem2 = $_POST['coCurriculumSem2'];
+            //     $sql = "UPDATE faculty_course_details SET 
+            //     faculty='$faculty', courseType='$courseType', admissionYear='$admissionYear', major1='$major1', major2='$major2' ,
+            //     major3='$major3',major4='$major4',vocationalSem1='$vocationalSem1',vocationalSem2='$vocationalSem2',
+            //     coCurriculumSem1='$coCurriculumSem1',coCurriculumSem2='$coCurriculumSem2',lastUpdated='$creationTime'
+            //     WHERE registrationNo='$registrationNo'";
+            //     $con->query($sql);
+            // } 
+            else if ($actionType == '6') { // Upload Documents
                 $documents = json_decode($_POST['documents'], true);
                 $documents = json_encode($documents);
                 $sql = "UPDATE documents SET documents='$documents',lastUpdated='$creationTime' 
                 WHERE registrationNo='$registrationNo'";
                 $con->query($sql);
-            } else if ($actionType == '8') { // Merit Details
+            } else if ($actionType == '7') { // Merit Details
                 $nationalCompetition = $_POST['nationalCompetition'];
                 $otherCompetition = $_POST['otherCompetition'];
                 $ncc = $_POST['ncc'];
@@ -221,7 +246,7 @@ switch ($requestMethod) {
                 nssDocument='$nssDocument', roverRanger='$roverRanger', otherRoverRanger='$otherRoverRanger', rrDocument='$rrDocument', 
                 bcom='$bcom', other='$other', uploadExtraMark='$uploadExtraMark', totalMeritCount='$totalMeritCount', lastUpdated='$creationTime' WHERE registrationNo='$registrationNo'";
                 $con->query($sql);
-            } else if ($actionType == '9') { // Declaration
+            } else if ($actionType == '8') { // Declaration
                 $sql = "UPDATE basic_details SET 
                 signature='$signature', lastUpdated='$creationTime'
                 WHERE registrationNo='$registrationNo'";
@@ -272,23 +297,32 @@ switch ($requestMethod) {
                 advanced_details.cPostOffice, advanced_details.cState, advanced_details.cCity FROM advanced_details ";
                 $WHERE = "WHERE registrationNo='$registrationNo'";
             } else if ($actionType == '5') { // Academic Details
-                $QUERY = "SELECT academic_details.academicDetails FROM academic_details ";
-                $WHERE = "WHERE registrationNo='$registrationNo'";
-            } else if ($actionType == '6') { // Faculty Details
-                $QUERY = "SELECT faculty_course_details.faculty, faculty_course_details.courseType, faculty_course_details.admissionYear, 
-                faculty_course_details.major1, faculty_course_details.major2, faculty_course_details.major3, faculty_course_details.major4, 
-                faculty_course_details.vocationalSem1, faculty_course_details.vocationalSem2, faculty_course_details.coCurriculumSem1, 
-                faculty_course_details.coCurriculumSem2 FROM faculty_course_details ";
-                $WHERE = "WHERE registrationNo='$registrationNo'";
-            } else if ($actionType == '7') { // Upload Documents
+                $QUERY = "SELECT academic_details.registrationNo, faculty_course_details.registrationNo, academic_details.academicDetails, faculty_course_details.faculty, faculty_course_details.courseType, faculty_course_details.admissionYear, 
+                    faculty_course_details.major1, faculty_course_details.major2, faculty_course_details.major3, faculty_course_details.major4, 
+                    faculty_course_details.vocationalSem1, faculty_course_details.vocationalSem2, faculty_course_details.coCurriculumSem1, 
+                    faculty_course_details.coCurriculumSem2 FROM academic_details 
+                    INNER JOIN faculty_course_details ON academic_details.registrationNo = faculty_course_details.registrationNo ";
+                $WHERE = "WHERE academic_details.registrationNo='$registrationNo'";
+            }
+            // else if ($actionType == '5') { // Academic Details
+            //     $QUERY = "SELECT academic_details.academicDetails FROM academic_details ";
+            //     $WHERE = "WHERE registrationNo='$registrationNo'";
+            // } else if ($actionType == '6') { // Faculty Details
+            //     $QUERY = "SELECT faculty_course_details.faculty, faculty_course_details.courseType, faculty_course_details.admissionYear, 
+            //     faculty_course_details.major1, faculty_course_details.major2, faculty_course_details.major3, faculty_course_details.major4, 
+            //     faculty_course_details.vocationalSem1, faculty_course_details.vocationalSem2, faculty_course_details.coCurriculumSem1, 
+            //     faculty_course_details.coCurriculumSem2 FROM faculty_course_details ";
+            //     $WHERE = "WHERE registrationNo='$registrationNo'";
+            // } 
+            else if ($actionType == '6') { // Upload Documents
                 $QUERY = "SELECT documents.documents FROM documents ";
                 $WHERE = "WHERE registrationNo='$registrationNo'";
-            } else if ($actionType == '8') { // Merit Details
+            } else if ($actionType == '7') { // Merit Details
                 $QUERY = "SELECT merit_details.nationalCompetition, merit_details.nationalCertificate, merit_details.otherCompetition, merit_details.otherCertificate, merit_details.ncc, merit_details.nccCertificate, 
                 merit_details.freedomFighter, merit_details.nationalSevaScheme, merit_details.nssDocument, merit_details.roverRanger, merit_details.otherRoverRanger, 
                 merit_details.rrDocument, merit_details.bcom, merit_details.other, merit_details.uploadExtraMark, merit_details.totalMeritCount FROM merit_details ";
                 $WHERE = "WHERE registrationNo='$registrationNo'";
-            } else if ($actionType == '9') { // Declaration
+            } else if ($actionType == '8') { // Declaration
                 $QUERY = "SELECT basic_details.signature FROM basic_details ";
                 $WHERE = "WHERE registrationNo='$registrationNo'";
             }
