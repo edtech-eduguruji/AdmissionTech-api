@@ -29,6 +29,7 @@ if ($count > 0) {
         if ($row['role'] == "ADMIN") {
             $row['fullname'] = "Admin";
         }
+        $row['clg_id'] = $row['user_id'];
         $response = $row;
     }
     $jwt = createToken($response);
