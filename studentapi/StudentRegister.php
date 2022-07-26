@@ -49,8 +49,8 @@ if ($count == 0) {
         && $con->query($sql4) && $con->query($sql5) && $con->query($sql6)
     ) {
         $data = array(
-            'user_id' => $registrationNo, 'user_name' => $name,
-            'password' => $dob, 'fullname' => $name, 'submitted' => "0", 'payment' => "0", 'courseFee'=> "0", 'role' => "STUDENT"
+            'clg_id' => $registrationNo, 'user_name' => $name,
+            'password' => $dob, 'fullname' => $name, 'submitted' => "0", 'payment' => "0", 'courseFee' => "0", 'role' => "STUDENT"
         );
 
         $jwt = createToken($data);

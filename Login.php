@@ -6,8 +6,8 @@ include_once('utils.php');
 $dbConnection = new DBConnection($db);
 $con = $dbConnection->getConnection();
 
-$username = $_GET['username'];
-$password = $_GET['password'];
+$username = $con->real_escape_string($_GET['username']);
+$password = $con->real_escape_string($_GET['password']);
 
 if (isset($_GET['isAdmin'])) {
     $query = "SELECT * FROM users_info";
@@ -29,6 +29,7 @@ if ($count > 0) {
         if ($row['role'] == "ADMIN") {
             $row['fullname'] = "Admin";
         }
+        $row['clg_id'] = $row['user_id'];
         $response = $row;
     }
     $jwt = createToken($response);
